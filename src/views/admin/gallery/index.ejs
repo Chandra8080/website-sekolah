@@ -1,0 +1,83 @@
+<%- include('../partials/admin-head') %>
+<%- include('../partials/admin-sidebar') %>
+
+<div class="admin-main">
+  <%- include('../partials/admin-topbar') %>
+
+  <div class="admin-content">
+    <%- include('../partials/alert') %>
+
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+      <div>
+        <h3 class="fw-bold mb-1"><%= pageTitle %></h3>
+        <p class="text-muted small mb-0">Kelola dokumentasi galeri foto dan album kegiatan sekolah.</p>
+      </div>
+      <div class="mt-3 mt-md-0 d-flex gap-2">
+        <a href="/admin/gallery/categories/manage" class="btn btn-outline-secondary btn-sm d-inline-flex align-items-center gap-1">
+          <i data-lucide="tag" style="width: 14px; height: 14px;"></i>
+          <span>Kelola Kategori</span>
+        </a>
+        <a href="/admin/gallery/create" class="btn btn-primary btn-sm d-inline-flex align-items-center gap-1">
+          <i data-lucide="upload" style="width: 14px; height: 14px;"></i>
+          <span>Unggah Foto Baru</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="admin-card">
+      <div class="admin-card-header">
+        <form action="/admin/gallery" method="GET" class="d-flex gap-2 align-items-center">
+          <select name="categoryId" class="form-select form-select-sm" style="max-width: 220px;" onchange="this.form.submit()">
+            <option value="">Semua Kategori</option>
+            <% categories.forEach(function(cat) { %>
+              <option value="<%= cat.id %>" <%= categoryId === cat.id ? 'selected' : '' %>><%= cat.name %></option>
+            <% }); %>
+          </select>
+          <% if (categoryId) { %>
+            <a href="/admin/gallery" class="btn btn-sm btn-outline-danger">Reset</a>
+          <% } %>
+        </form>
+      </div>
+
+      <div class="admin-card-body">
+        <% if (galleries && galleries.length > 0) { %>
+          <div class="row g-3">
+            <% galleries.forEach(function(g) { %>
+              <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="card h-100 border rounded overflow-hidden shadow-sm">
+                  <div style="height: 160px; overflow: hidden; background: #e2e8f0;">
+                    <img src="<%= g.thumbnailUrl || g.imageUrl %>" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+                  </div>
+                  <div class="p-3 d-flex flex-column flex-grow-1">
+                    <span class="badge bg-light text-primary align-self-start mb-1"><%= g.category ? g.category.name : 'Umum' %></span>
+                    <strong class="text-truncate d-block mb-1"><%= g.title %></strong>
+                    <div class="mt-auto d-flex justify-content-between align-items-center pt-2 border-top">
+                      <span class="status-badge <%= g.isPublished ? 'published' : 'draft' %>" style="font-size: 0.68rem;">
+                        <%= g.isPublished ? 'Terbit' : 'Draf' %>
+                      </span>
+                      <div class="d-flex gap-1">
+                        <a href="/admin/gallery/<%= g.id %>/edit" class="btn-action" title="Edit"><i data-lucide="edit-2" style="width: 13px; height: 13px;"></i></a>
+                        <form action="/admin/gallery/<%= g.id %>/delete" method="POST" onsubmit="return confirm('Hapus foto ini?');" style="display: inline;">
+                          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                          <button type="submit" class="btn-action delete" title="Hapus"><i data-lucide="trash" style="width: 13px; height: 13px;"></i></button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% }); %>
+          </div>
+        <% } else { %>
+          <div class="text-center text-muted py-5">
+            Belum ada foto yang diunggah dalam galeri.
+          </div>
+        <% } %>
+      </div>
+
+      <%- include('../partials/pagination') %>
+    </div>
+  </div>
+
+  <%- include('../partials/admin-footer') %>
+</div>

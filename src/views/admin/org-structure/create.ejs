@@ -1,0 +1,81 @@
+<%- include('../partials/admin-head') %>
+<%- include('../partials/admin-sidebar') %>
+
+<div class="admin-main">
+  <%- include('../partials/admin-topbar') %>
+
+  <div class="admin-content">
+    <%- include('../partials/alert') %>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h3 class="fw-bold mb-1">Tambah Pejabat Struktur</h3>
+        <p class="text-muted small mb-0">Posisi kepemimpinan dalam bagan organisasi sekolah.</p>
+      </div>
+      <a href="/admin/org-structure" class="btn btn-outline-secondary btn-sm">&larr; Kembali ke Daftar</a>
+    </div>
+
+    <form action="/admin/org-structure" method="POST" enctype="multipart/form-data">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+      <div class="row g-4 justify-content-center">
+        <div class="col-lg-8">
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <h5>Data Pejabat</h5>
+            </div>
+            <div class="admin-card-body">
+              <div class="mb-3">
+                <label class="form-label">Nama Lengkap & Gelar <span class="text-danger">*</span></label>
+                <input type="text" name="name" class="form-control" placeholder="Contoh: Drs. H. Bambang Sudrajat, M.Pd." required>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Nama Jabatan / Posisi <span class="text-danger">*</span></label>
+                <input type="text" name="position" class="form-control" placeholder="Contoh: Kepala Sekolah / Wakil Kepala Sekolah Bidang Kurikulum" required>
+              </div>
+
+              <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                  <label class="form-label">Atasan Langsung (Parent)</label>
+                  <select name="parentId" class="form-select">
+                    <option value="">-- Puncak Pimpinan (Tanpa Atasan) --</option>
+                    <% parentList.forEach(function(p) { %>
+                      <option value="<%= p.id %>"><%= p.name %> (<%= p.position %>)</option>
+                    <% }); %>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Tingkat Hierarki (Level)</label>
+                  <input type="number" name="level" class="form-control" value="1" min="0">
+                  <div class="form-text">0: Pimpinan puncak, 1: Wakil, 2: Koordinator</div>
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Urutan Tampil</label>
+                  <input type="number" name="sortOrder" class="form-control" value="0">
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Foto Pejabat</label>
+                <input type="file" name="photo" class="form-control" accept="image/*">
+              </div>
+
+              <div class="form-check form-switch mb-4">
+                <input class="form-check-input" type="checkbox" name="isActive" value="true" id="activeSwitch" checked>
+                <label class="form-check-label fw-bold small" for="activeSwitch">Status Aktif di Bagan</label>
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100 d-inline-flex justify-content-center align-items-center gap-1">
+                <i data-lucide="check" style="width: 16px; height: 16px;"></i>
+                <span>Simpan Pejabat</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <%- include('../partials/admin-footer') %>
+</div>

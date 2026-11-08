@@ -1,0 +1,66 @@
+<%- include('../../partials/head') %>
+<%- include('../../partials/header') %>
+
+<main class="py-5">
+  <div class="container">
+    <nav aria-label="breadcrumb" class="mb-4">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Beranda</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Pengumuman</li>
+      </ol>
+    </nav>
+
+    <div class="text-center mb-5">
+      <span class="section-tag">Pemberitahuan Resmi</span>
+      <h1 class="fw-bold mb-2">Papan Pengumuman Sekolah</h1>
+      <p class="text-secondary max-w-600 mx-auto">Informasi resmi seputar kegiatan akademik, administrasi, dan agenda sekolah.</p>
+    </div>
+
+    <% if (announcements && announcements.length > 0) { %>
+      <div class="row g-4 justify-content-center">
+        <% announcements.forEach(function(ann) { %>
+          <div class="col-lg-10">
+            <div class="card border rounded-3 p-4 shadow-sm">
+              <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-3">
+                <div class="d-flex align-items-center gap-2">
+                  <span class="badge <%= ann.priority === 'urgent' ? 'bg-danger' : (ann.priority === 'high' ? 'bg-warning text-dark' : 'bg-primary') %> text-uppercase">
+                    Prioritas <%= ann.priority %>
+                  </span>
+                  <span class="badge bg-light text-secondary text-uppercase"><%= ann.category %></span>
+                </div>
+                <div class="text-muted small">
+                  <i data-lucide="calendar" style="width: 14px; height: 14px; display: inline-block;"></i> Diterbitkan: <%= formatDate(ann.publishedAt || ann.createdAt) %>
+                </div>
+              </div>
+
+              <h4 class="fw-bold mb-2">
+                <a href="/announcements/<%= ann.id %>" class="text-dark text-decoration-none"><%= ann.title %></a>
+              </h4>
+              <p class="text-secondary mb-3"><%= truncate(ann.content, 180) %></p>
+
+              <div class="d-flex justify-content-between align-items-center">
+                <% if (ann.attachmentUrl) { %>
+                  <a href="<%= ann.attachmentUrl %>" target="_blank" class="small text-danger fw-bold d-inline-flex align-items-center gap-1">
+                    <i data-lucide="file-text" style="width: 14px; height: 14px;"></i>
+                    <span>Lampiran Berkas Unduhan</span>
+                  </a>
+                <% } else { %>
+                  <span></span>
+                <% } %>
+                <a href="/announcements/<%= ann.id %>" class="btn btn-outline-primary btn-sm">Baca Selengkapnya &rarr;</a>
+              </div>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+
+      <%- include('../../partials/pagination') %>
+    <% } else { %>
+      <div class="alert alert-light border text-center py-5">
+        Tidak ada pengumuman yang aktif saat ini.
+      </div>
+    <% } %>
+  </div>
+</main>
+
+<%- include('../../partials/footer') %>

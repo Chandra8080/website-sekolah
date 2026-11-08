@@ -1,0 +1,77 @@
+<%- include('../partials/admin-head') %>
+<%- include('../partials/admin-sidebar') %>
+
+<div class="admin-main">
+  <%- include('../partials/admin-topbar') %>
+
+  <div class="admin-content">
+    <%- include('../partials/alert') %>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h3 class="fw-bold mb-1"><%= pageTitle %></h3>
+        <p class="text-muted small mb-0">Kelola dokumen kerangka kurikulum dan silabus sekolah.</p>
+      </div>
+      <a href="/admin/curriculum/create" class="btn btn-primary btn-sm d-inline-flex align-items-center gap-1">
+        <i data-lucide="plus" style="width: 14px; height: 14px;"></i>
+        <span>Tambah Kurikulum</span>
+      </a>
+    </div>
+
+    <div class="admin-card">
+      <div class="table-responsive">
+        <table class="table-custom">
+          <thead>
+            <tr>
+              <th>Nama Kurikulum</th>
+              <th>Tahun Ajaran</th>
+              <th>Deskripsi Singkat</th>
+              <th>Berkas Lampiran</th>
+              <th>Status</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (curriculumList && curriculumList.length > 0) { %>
+              <% curriculumList.forEach(function(c) { %>
+                <tr>
+                  <td class="fw-bold text-dark"><%= c.name %></td>
+                  <td><span class="badge bg-light text-primary"><%= c.year %></span></td>
+                  <td class="small text-muted"><%= truncate(c.description, 60) %></td>
+                  <td>
+                    <% if (c.fileUrl) { %>
+                      <a href="<%= c.fileUrl %>" target="_blank" class="badge bg-light text-success">Unduh PDF</a>
+                    <% } else { %>
+                      <span class="text-muted small">-</span>
+                    <% } %>
+                  </td>
+                  <td>
+                    <span class="status-badge <%= c.isActive ? 'active' : 'inactive' %>">
+                      <%= c.isActive ? 'Aktif' : 'Nonaktif' %>
+                    </span>
+                  </td>
+                  <td>
+                    <div class="d-flex gap-1">
+                      <a href="/admin/curriculum/<%= c.id %>/edit" class="btn-action" title="Edit"><i data-lucide="edit-2" style="width: 14px; height: 14px;"></i></a>
+                      <form action="/admin/curriculum/<%= c.id %>/delete" method="POST" onsubmit="return confirm('Hapus kurikulum ini?');" style="display: inline;">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <button type="submit" class="btn-action delete" title="Hapus"><i data-lucide="trash" style="width: 14px; height: 14px;"></i></button>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+              <% }); %>
+            <% } else { %>
+              <tr>
+                <td colspan="6" class="text-center text-muted py-4">Belum ada kurikulum yang ditambahkan.</td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+      <%- include('../partials/pagination') %>
+    </div>
+  </div>
+
+  <%- include('../partials/admin-footer') %>
+</div>

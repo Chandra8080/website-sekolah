@@ -1,0 +1,55 @@
+<%- include('../../partials/head') %>
+<%- include('../../partials/header') %>
+
+<main class="py-5">
+  <div class="container">
+    <nav aria-label="breadcrumb" class="mb-4">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Beranda</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Galeri Foto</li>
+      </ol>
+    </nav>
+
+    <div class="text-center mb-5">
+      <span class="section-tag">Dokumentasi Visual</span>
+      <h1 class="fw-bold mb-2">Galeri Foto Sekolah</h1>
+      <p class="text-secondary max-w-600 mx-auto">Potret ragam dinamika kegiatan kurikuler, ekstrakurikuler, dan lingkungan kampus.</p>
+    </div>
+
+    <!-- Category Tabs -->
+    <% if (categories && categories.length > 0) { %>
+      <div class="d-flex flex-wrap justify-content-center gap-2 mb-4">
+        <a href="/gallery" class="btn <%= !activeCategory ? 'btn-primary' : 'btn-outline-secondary' %>">Semua Foto</a>
+        <% categories.forEach(function(cat) { %>
+          <a href="/gallery?category=<%= cat.slug %>" class="btn <%= activeCategory && activeCategory.id === cat.id ? 'btn-primary' : 'btn-outline-secondary' %>">
+            <%= cat.name %> (<%= cat._count.galleries %>)
+          </a>
+        <% }); %>
+      </div>
+    <% } %>
+
+    <% if (photos && photos.length > 0) { %>
+      <div class="gallery-grid mb-5">
+        <% photos.forEach(function(photo) { %>
+          <div class="gallery-grid-item" onclick="openLightbox('<%= photo.imageUrl %>')">
+            <img src="<%= photo.thumbnailUrl || photo.imageUrl %>" alt="<%= photo.title %>" loading="lazy">
+            <div class="gallery-overlay">
+              <h6 class="fw-bold mb-1 text-white"><%= photo.title %></h6>
+              <% if (photo.description) { %>
+                <small class="text-white-50"><%= truncate(photo.description, 60) %></small>
+              <% } %>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+
+      <%- include('../../partials/pagination') %>
+    <% } else { %>
+      <div class="alert alert-light border text-center py-5">
+        Belum ada dokumentasi foto dalam kategori ini.
+      </div>
+    <% } %>
+  </div>
+</main>
+
+<%- include('../../partials/footer') %>

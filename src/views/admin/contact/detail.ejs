@@ -1,0 +1,99 @@
+<%- include('../partials/admin-head') %>
+<%- include('../partials/admin-sidebar') %>
+
+<div class="admin-main">
+  <%- include('../partials/admin-topbar') %>
+
+  <div class="admin-content">
+    <%- include('../partials/alert') %>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h3 class="fw-bold mb-1">Detail Pesan Kontak</h3>
+        <p class="text-muted small mb-0">Pengirim: <%= message.name %></p>
+      </div>
+      <a href="/admin/contact" class="btn btn-outline-secondary btn-sm">&larr; Kembali ke Kotak Masuk</a>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-lg-8">
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h5>Isi Pesan Masuk</h5>
+            <span class="badge bg-light text-muted"><%= formatDate(message.createdAt) %></span>
+          </div>
+          <div class="admin-card-body">
+            <div class="row g-3 mb-4 pb-3 border-bottom">
+              <div class="col-sm-6">
+                <small class="text-muted d-block">Nama Lengkap</small>
+                <strong><%= message.name %></strong>
+              </div>
+              <div class="col-sm-6">
+                <small class="text-muted d-block">Alamat Email</small>
+                <a href="mailto:<%= message.email %>" class="text-primary fw-semibold"><%= message.email %></a>
+              </div>
+              <div class="col-sm-6">
+                <small class="text-muted d-block">Nomor Telepon / WhatsApp</small>
+                <span><%= message.phone || '-' %></span>
+              </div>
+              <div class="col-sm-6">
+                <small class="text-muted d-block">Subjek</small>
+                <span class="fw-semibold"><%= message.subject %></span>
+              </div>
+            </div>
+
+            <h6 class="fw-bold mb-2">Pesan:</h6>
+            <div class="p-3 bg-light rounded-3 text-secondary lh-lg mb-4">
+              <%= message.message %>
+            </div>
+
+            <div class="d-flex gap-2">
+              <a href="mailto:<%= message.email %>?subject=Balasan: <%= encodeURIComponent(message.subject) %>" class="btn btn-primary btn-sm d-inline-flex align-items-center gap-1">
+                <i data-lucide="reply" style="width: 14px; height: 14px;"></i>
+                <span>Balas Lewat Email</span>
+              </a>
+              <% if (message.phone) { %>
+                <a href="https://wa.me/<%= message.phone.replace(/[^0-9]/g, '') %>" target="_blank" class="btn btn-success btn-sm d-inline-flex align-items-center gap-1">
+                  <i data-lucide="message-circle" style="width: 14px; height: 14px;"></i>
+                  <span>Balas WhatsApp</span>
+                </a>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h5>Catatan Tindak Lanjut</h5>
+          </div>
+          <div class="admin-card-body">
+            <form action="/admin/contact/<%= message.id %>/reply" method="POST">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+              <div class="mb-3">
+                <label class="form-label">Catatan Internal / Status Respons</label>
+                <textarea name="replyNote" rows="5" class="form-control" placeholder="Contoh: Sudah dihubungi via WhatsApp oleh Bu Sri pada tanggal 10 Mei..."><%= message.replyNote || '' %></textarea>
+                <div class="form-text">Catatan ini hanya dapat dilihat oleh staf admin internal.</div>
+              </div>
+
+              <button type="submit" class="btn btn-outline-primary w-100 btn-sm mb-3">
+                Simpan Catatan
+              </button>
+            </form>
+
+            <form action="/admin/contact/<%= message.id %>/delete" method="POST" onsubmit="return confirm('Hapus permanen pesan ini?');">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+              <button type="submit" class="btn btn-outline-danger w-100 btn-sm">
+                Hapus Pesan
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%- include('../partials/admin-footer') %>
+</div>

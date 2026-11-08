@@ -1,0 +1,89 @@
+<%- include('../../partials/head') %>
+<%- include('../../partials/header') %>
+
+<main class="py-5">
+  <div class="container">
+    <nav aria-label="breadcrumb" class="mb-4">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Beranda</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Portal Akademik</li>
+      </ol>
+    </nav>
+
+    <div class="text-center mb-5">
+      <span class="section-tag">Kurikulum & Pembelajaran</span>
+      <h1 class="fw-bold mb-2">Pusat Layanan Akademik</h1>
+      <p class="text-secondary max-w-600 mx-auto">Informasi komprehensif kurikulum, program penjurusan, dan kalender akademik tahun berjalan.</p>
+    </div>
+
+    <!-- Quick Navigation Cards -->
+    <div class="row g-4 mb-5">
+      <div class="col-md-4">
+        <div class="card border rounded-3 p-4 shadow-sm text-center h-100">
+          <div class="mx-auto mb-3" style="width: 54px; height: 54px; background: #e0f2fe; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #0284c7;">
+            <i data-lucide="layers" style="width: 28px; height: 28px;"></i>
+          </div>
+          <h5 class="fw-bold mb-2">Program Peminatan</h5>
+          <p class="text-muted small mb-3">Pilihan konsentrasi keilmuan yang disesuaikan dengan minat dan rencana studi lanjutan siswa.</p>
+          <a href="/academic/programs" class="btn btn-outline-primary btn-sm mt-auto">Lihat Program &rarr;</a>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card border rounded-3 p-4 shadow-sm text-center h-100">
+          <div class="mx-auto mb-3" style="width: 54px; height: 54px; background: #fef3c7; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #d97706;">
+            <i data-lucide="book" style="width: 28px; height: 28px;"></i>
+          </div>
+          <h5 class="fw-bold mb-2">Struktur Kurikulum</h5>
+          <p class="text-muted small mb-3">Dokumen silabus, panduan asesmen, dan alokasi waktu mata pelajaran wajib dan peminatan.</p>
+          <a href="/academic/curriculum" class="btn btn-outline-primary btn-sm mt-auto">Detail Kurikulum &rarr;</a>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card border rounded-3 p-4 shadow-sm text-center h-100">
+          <div class="mx-auto mb-3" style="width: 54px; height: 54px; background: #dcfce7; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #16a34a;">
+            <i data-lucide="activity" style="width: 28px; height: 28px;"></i>
+          </div>
+          <h5 class="fw-bold mb-2">Ekstrakurikuler</h5>
+          <p class="text-muted small mb-3">Wadah penempaan bakat, olahraga, seni budaya, kepemimpinan, dan komunitas riset ilmiah.</p>
+          <a href="/academic/extracurriculars" class="btn btn-outline-primary btn-sm mt-auto">Eksplor Ekskul &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Academic Calendar Highlights -->
+    <% if (calendarEvents && calendarEvents.length > 0) { %>
+      <div class="card border rounded-3 p-4 shadow-sm mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h4 class="fw-bold mb-0">Jadwal Kalender Akademik</h4>
+          <span class="badge bg-primary">Semester Berjalan</span>
+        </div>
+        <div class="table-responsive">
+          <table class="table align-middle">
+            <thead class="table-light">
+              <tr>
+                <th>Tanggal</th>
+                <th>Kegiatan / Agenda</th>
+                <th>Kategori</th>
+                <th>Keterangan</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% calendarEvents.forEach(function(cal) { %>
+                <tr>
+                  <td><strong><%= formatDate(cal.startDate) %><% if (cal.endDate) { %> - <%= formatDate(cal.endDate) %><% } %></strong></td>
+                  <td class="fw-bold text-dark"><%= cal.title %></td>
+                  <td><span class="badge bg-light text-dark"><%= cal.type %></span></td>
+                  <td class="text-muted small"><%= cal.description || '-' %></td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    <% } %>
+  </div>
+</main>
+
+<%- include('../../partials/footer') %>

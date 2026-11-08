@@ -1,0 +1,120 @@
+<%- include('../../partials/head') %>
+<%- include('../../partials/header') %>
+
+<main class="py-5">
+  <div class="container">
+    <nav aria-label="breadcrumb" class="mb-4">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Beranda</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Kontak Kami</li>
+      </ol>
+    </nav>
+
+    <div class="text-center mb-5">
+      <span class="section-tag">Komunikasi & Konsultasi</span>
+      <h1 class="fw-bold mb-2">Hubungi Lembaga Sekolah</h1>
+      <p class="text-secondary max-w-600 mx-auto">Kami siap melayani kebutuhan informasi dan pertanyaan seputar proses pembelajaran serta layanan sekolah.</p>
+    </div>
+
+    <div class="row g-5">
+      <!-- Contact Information Cards -->
+      <div class="col-lg-5">
+        <div class="card border rounded-3 p-4 shadow-sm mb-4">
+          <h4 class="fw-bold mb-4">Informasi Kontak</h4>
+
+          <div class="d-flex flex-column gap-4">
+            <div class="d-flex align-items-start gap-3">
+              <div class="p-3 bg-light rounded text-primary"><i data-lucide="map-pin" style="width: 24px; height: 24px;"></i></div>
+              <div>
+                <strong class="d-block text-dark">Alamat Kampus:</strong>
+                <span class="text-secondary small"><%= settings.school_address || 'Jl. Pendidikan No. 45, Kebayoran Baru, Jakarta Selatan' %></span>
+              </div>
+            </div>
+
+            <div class="d-flex align-items-start gap-3">
+              <div class="p-3 bg-light rounded text-primary"><i data-lucide="phone" style="width: 24px; height: 24px;"></i></div>
+              <div>
+                <strong class="d-block text-dark">Telepon Layanan:</strong>
+                <span class="text-secondary small"><%= settings.school_phone || '(021) 7890-1234' %></span>
+              </div>
+            </div>
+
+            <div class="d-flex align-items-start gap-3">
+              <div class="p-3 bg-light rounded text-primary"><i data-lucide="mail" style="width: 24px; height: 24px;"></i></div>
+              <div>
+                <strong class="d-block text-dark">Email Resmi:</strong>
+                <span class="text-secondary small"><%= settings.school_email || 'info@sekolah.sch.id' %></span>
+              </div>
+            </div>
+
+            <div class="d-flex align-items-start gap-3">
+              <div class="p-3 bg-light rounded text-primary"><i data-lucide="clock" style="width: 24px; height: 24px;"></i></div>
+              <div>
+                <strong class="d-block text-dark">Jam Pelayanan Kantor:</strong>
+                <span class="text-secondary small"><%= settings.school_hours || 'Senin s.d. Jumat, 07:00 - 16:00 WIB' %></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Google Map Card -->
+        <div class="card border rounded-3 overflow-hidden shadow-sm" style="height: 250px;">
+          <iframe 
+            src="<%= settings.school_maps_embed || 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.295484865187!2d106.801!3d-6.224!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNsKwMTMnMjYuNCJTIDEwNsKwNDgnMDMuNiJF!5e0!3m2!1sid!2sid!4v1600000000000!5m2!1sid!2sid' %>" 
+            width="100%" 
+            height="100%" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy">
+          </iframe>
+        </div>
+      </div>
+
+      <!-- Contact Message Form -->
+      <div class="col-lg-7">
+        <div class="card border rounded-3 p-4 p-md-5 shadow-sm">
+          <h4 class="fw-bold mb-3">Kirim Pesan Pertanyaan</h4>
+          <p class="text-muted small mb-4">Silakan lengkapi formulir di bawah ini. Tim kami akan merespons melalui email atau nomor telepon yang Anda cantumkan.</p>
+
+          <form action="/contact" method="POST">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Nama Lengkap Anda <span class="text-danger">*</span></label>
+                <input type="text" name="name" class="form-control" placeholder="Nama Anda" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Alamat Email <span class="text-danger">*</span></label>
+                <input type="email" name="email" class="form-control" placeholder="nama@email.com" required>
+              </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Nomor Telepon / WhatsApp</label>
+                <input type="tel" name="phone" class="form-control" placeholder="08xxxxxxxxxx">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Subjek Pesan</label>
+                <input type="text" name="subject" class="form-control" placeholder="Tujuan pesan / konsultasi">
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label">Isi Pesan <span class="text-danger">*</span></label>
+              <textarea name="message" rows="5" class="form-control" placeholder="Tuliskan pertanyaan atau pesan Anda secara jelas di sini..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary d-inline-flex align-items-center gap-2">
+              <i data-lucide="send" style="width: 16px; height: 16px;"></i>
+              <span>Kirimkan Pesan Sekarang</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<%- include('../../partials/footer') %>

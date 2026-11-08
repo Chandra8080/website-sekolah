@@ -1,0 +1,187 @@
+<aside class="admin-sidebar" id="adminSidebar">
+  <div class="sidebar-brand">
+    <div style="width: 32px; height: 32px; border-radius: 6px; background: var(--admin-secondary); color: #000; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1rem; margin-right: 10px;">
+      SIS
+    </div>
+    <div class="text-truncate">
+      <div style="font-size: 0.95rem; font-weight: 700; color: #fff;">Panel Admin</div>
+      <div style="font-size: 0.7rem; color: #94a3b8;"><%= settings.school_name || 'SMA Nusantara' %></div>
+    </div>
+  </div>
+
+  <ul class="sidebar-menu">
+    <li class="sidebar-heading">Utama</li>
+    <li class="sidebar-item">
+      <a href="/admin" class="sidebar-link <%= currentPath === '/admin' ? 'active' : '' %>">
+        <i data-lucide="layout-dashboard"></i>
+        <span>Dashboard</span>
+      </a>
+    </li>
+
+    <li class="sidebar-heading">Publikasi & Konten</li>
+    <li class="sidebar-item">
+      <a href="/admin/news" class="sidebar-link <%= currentPath.startsWith('/admin/news') ? 'active' : '' %>">
+        <i data-lucide="newspaper"></i>
+        <span>Berita & Artikel</span>
+      </a>
+    </li>
+    <li class="sidebar-item">
+      <a href="/admin/announcements" class="sidebar-link <%= currentPath.startsWith('/admin/announcements') ? 'active' : '' %>">
+        <i data-lucide="megaphone"></i>
+        <span>Pengumuman</span>
+      </a>
+    </li>
+    <li class="sidebar-item">
+      <a href="/admin/events" class="sidebar-link <%= currentPath.startsWith('/admin/events') ? 'active' : '' %>">
+        <i data-lucide="calendar"></i>
+        <span>Agenda Kegiatan</span>
+      </a>
+    </li>
+    <li class="sidebar-item">
+      <a href="/admin/achievements" class="sidebar-link <%= currentPath.startsWith('/admin/achievements') ? 'active' : '' %>">
+        <i data-lucide="trophy"></i>
+        <span>Prestasi Sekolah</span>
+      </a>
+    </li>
+    <li class="sidebar-item">
+      <a href="/admin/gallery" class="sidebar-link <%= currentPath.startsWith('/admin/gallery') ? 'active' : '' %>">
+        <i data-lucide="images"></i>
+        <span>Galeri Foto</span>
+      </a>
+    </li>
+    <li class="sidebar-item">
+      <a href="/admin/media" class="sidebar-link <%= currentPath.startsWith('/admin/media') ? 'active' : '' %>">
+        <i data-lucide="folder"></i>
+        <span>Media Manager</span>
+      </a>
+    </li>
+
+    <li class="sidebar-heading">Kesiswaan & PPDB</li>
+    <li class="sidebar-item">
+      <a href="/admin/ppdb" class="sidebar-link <%= currentPath === '/admin/ppdb' || currentPath.startsWith('/admin/ppdb/') && !currentPath.includes('settings') ? 'active' : '' %>">
+        <i data-lucide="user-check"></i>
+        <span>Pendaftar PPDB</span>
+      </a>
+    </li>
+    <li class="sidebar-item">
+      <a href="/admin/ppdb/settings" class="sidebar-link <%= currentPath.includes('/ppdb/settings') ? 'active' : '' %>">
+        <i data-lucide="sliders"></i>
+        <span>Pengaturan PPDB</span>
+      </a>
+    </li>
+
+    <li class="sidebar-heading">Data Akademik & SDM</li>
+    <li class="sidebar-item">
+      <a href="/admin/teachers" class="sidebar-link <%= currentPath.startsWith('/admin/teachers') ? 'active' : '' %>">
+        <i data-lucide="graduation-cap"></i>
+        <span>Data Guru</span>
+      </a>
+    </li>
+    <li class="sidebar-item">
+      <a href="/admin/staff" class="sidebar-link <%= currentPath.startsWith('/admin/staff') ? 'active' : '' %>">
+        <i data-lucide="briefcase"></i>
+        <span>Staf Tata Usaha</span>
+      </a>
+    </li>
+    <li class="sidebar-item">
+      <a href="/admin/org-structure" class="sidebar-link <%= currentPath.startsWith('/admin/org-structure') ? 'active' : '' %>">
+        <i data-lucide="git-fork"></i>
+        <span>Struktur Organisasi</span>
+      </a>
+    </li>
+    <li class="sidebar-item">
+      <a href="/admin/programs" class="sidebar-link <%= currentPath.startsWith('/admin/programs') ? 'active' : '' %>">
+        <i data-lucide="layers"></i>
+        <span>Program Peminatan</span>
+      </a>
+    </li>
+    <li class="sidebar-item">
+      <a href="/admin/curriculum" class="sidebar-link <%= currentPath.startsWith('/admin/curriculum') ? 'active' : '' %>">
+        <i data-lucide="book"></i>
+        <span>Kurikulum</span>
+      </a>
+    </li>
+    <li class="sidebar-item">
+      <a href="/admin/academic-calendar" class="sidebar-link <%= currentPath.startsWith('/admin/academic-calendar') ? 'active' : '' %>">
+        <i data-lucide="calendar-days"></i>
+        <span>Kalender Akademik</span>
+      </a>
+    </li>
+    <li class="sidebar-item">
+      <a href="/admin/extracurriculars" class="sidebar-link <%= currentPath.startsWith('/admin/extracurriculars') ? 'active' : '' %>">
+        <i data-lucide="activity"></i>
+        <span>Ekstrakurikuler</span>
+      </a>
+    </li>
+    <li class="sidebar-item">
+      <a href="/admin/facilities" class="sidebar-link <%= currentPath.startsWith('/admin/facilities') ? 'active' : '' %>">
+        <i data-lucide="building"></i>
+        <span>Sarana & Prasarana</span>
+      </a>
+    </li>
+
+    <li class="sidebar-heading">Interaksi & Hubungan</li>
+    <li class="sidebar-item">
+      <a href="/admin/contact" class="sidebar-link <%= currentPath.startsWith('/admin/contact') ? 'active' : '' %>">
+        <i data-lucide="mail"></i>
+        <span>Pesan Masuk</span>
+      </a>
+    </li>
+
+    <% if (currentUser && (currentUser.roleSlug === 'super_admin' || currentUser.roleSlug === 'administrator')) { %>
+      <li class="sidebar-heading">Konfigurasi Situs</li>
+      <li class="sidebar-item">
+        <a href="/admin/homepage-sections" class="sidebar-link <%= currentPath.startsWith('/admin/homepage-sections') ? 'active' : '' %>">
+          <i data-lucide="monitor"></i>
+          <span>Konten Beranda</span>
+        </a>
+      </li>
+      <li class="sidebar-item">
+        <a href="/admin/menus" class="sidebar-link <%= currentPath.startsWith('/admin/menus') ? 'active' : '' %>">
+          <i data-lucide="menu"></i>
+          <span>Menu Navigasi</span>
+        </a>
+      </li>
+      <li class="sidebar-item">
+        <a href="/admin/social-media" class="sidebar-link <%= currentPath.startsWith('/admin/social-media') ? 'active' : '' %>">
+          <i data-lucide="share-2"></i>
+          <span>Media Sosial</span>
+        </a>
+      </li>
+      <li class="sidebar-item">
+        <a href="/admin/settings" class="sidebar-link <%= currentPath.startsWith('/admin/settings') && !currentPath.includes('colors') ? 'active' : '' %>">
+          <i data-lucide="settings"></i>
+          <span>Pengaturan Sekolah</span>
+        </a>
+      </li>
+      <li class="sidebar-item">
+        <a href="/admin/settings/colors" class="sidebar-link <%= currentPath.includes('/settings/colors') ? 'active' : '' %>">
+          <i data-lucide="palette"></i>
+          <span>Tema & Warna</span>
+        </a>
+      </li>
+    <% } %>
+
+    <% if (currentUser && currentUser.roleSlug === 'super_admin') { %>
+      <li class="sidebar-heading">Akses Sistem</li>
+      <li class="sidebar-item">
+        <a href="/admin/users" class="sidebar-link <%= currentPath.startsWith('/admin/users') ? 'active' : '' %>">
+          <i data-lucide="shield-check"></i>
+          <span>Kelola Pengguna</span>
+        </a>
+      </li>
+    <% } %>
+  </ul>
+
+  <div class="p-3 border-top border-secondary border-opacity-25 mt-auto">
+    <div class="d-flex align-items-center justify-content-between text-white-50 small">
+      <div>
+        <div class="fw-bold text-white"><%= currentUser ? currentUser.name : 'Staf' %></div>
+        <div class="text-uppercase" style="font-size: 0.7rem;"><%= currentUser ? currentUser.roleName : 'Admin' %></div>
+      </div>
+      <a href="/admin/logout" class="text-danger" title="Keluar">
+        <i data-lucide="log-out" style="width: 18px; height: 18px;"></i>
+      </a>
+    </div>
+  </div>
+</aside>

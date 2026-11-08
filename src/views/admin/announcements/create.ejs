@@ -1,0 +1,88 @@
+<%- include('../partials/admin-head') %>
+<%- include('../partials/admin-sidebar') %>
+
+<div class="admin-main">
+  <%- include('../partials/admin-topbar') %>
+
+  <div class="admin-content">
+    <%- include('../partials/alert') %>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h3 class="fw-bold mb-1">Buat Pengumuman Baru</h3>
+        <p class="text-muted small mb-0">Rilis surat edaran atau informasi penting.</p>
+      </div>
+      <a href="/admin/announcements" class="btn btn-outline-secondary btn-sm">&larr; Kembali ke Daftar</a>
+    </div>
+
+    <form action="/admin/announcements" method="POST" enctype="multipart/form-data">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+      <div class="row g-4">
+        <div class="col-lg-8">
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <h5>Isi Pengumuman</h5>
+            </div>
+            <div class="admin-card-body">
+              <div class="mb-3">
+                <label class="form-label">Judul Pengumuman <span class="text-danger">*</span></label>
+                <input type="text" name="title" class="form-control" placeholder="Contoh: Jadwal Asesmen Sumatif Akhir Semester Genap" required>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Konten Pengumuman <span class="text-danger">*</span></label>
+                <textarea name="content" rows="10" class="form-control" placeholder="Tuliskan isi pengumuman atau surat edaran di sini..." required></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <h5>Pengaturan & Lampiran</h5>
+            </div>
+            <div class="admin-card-body">
+              <div class="mb-3">
+                <label class="form-label">Kategori</label>
+                <select name="category" class="form-select">
+                  <option value="umum">Umum</option>
+                  <option value="akademik">Akademik</option>
+                  <option value="kesiswaan">Kesiswaan</option>
+                  <option value="kepegawaian">Kepegawaian</option>
+                </select>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Tingkat Prioritas</label>
+                <select name="priority" class="form-select">
+                  <option value="normal">Normal</option>
+                  <option value="high">Penting (High)</option>
+                  <option value="urgent">Mendesak (Urgent)</option>
+                </select>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Unggah Berkas Lampiran (PDF)</label>
+                <input type="file" name="attachment" class="form-control" accept=".pdf,.doc,.docx">
+              </div>
+
+              <div class="form-check form-switch mb-4">
+                <input class="form-check-input" type="checkbox" name="isPublished" value="true" id="publishSwitch" checked>
+                <label class="form-check-label fw-bold small" for="publishSwitch">Terbitkan Pengumuman</label>
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100 d-inline-flex justify-content-center align-items-center gap-1">
+                <i data-lucide="check" style="width: 16px; height: 16px;"></i>
+                <span>Simpan Pengumuman</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <%- include('../partials/admin-footer') %>
+</div>

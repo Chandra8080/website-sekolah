@@ -1,0 +1,76 @@
+<%- include('../../partials/head') %>
+<%- include('../../partials/header') %>
+
+<main class="py-5">
+  <div class="container">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Beranda</a></li>
+        <li class="breadcrumb-item">Profil</li>
+        <li class="breadcrumb-item active" aria-current="page">Tentang Sekolah</li>
+      </ol>
+    </nav>
+
+    <div class="row g-5">
+      <div class="col-lg-8">
+        <h1 class="fw-bold mb-3"><%= (section && section.title) || 'Tentang ' + (settings.school_name || 'SMA Negeri Nusantara') %></h1>
+        <p class="lead text-secondary mb-4"><%= (section && section.subtitle) || settings.school_tagline || 'Lembaga pendidikan berkarakter, berbudaya, dan berdaya saing global.' %></p>
+
+        <% if (section && section.imageUrl) { %>
+          <div class="mb-4 rounded-3 overflow-hidden shadow-sm" style="max-height: 400px;">
+            <img src="<%= section.imageUrl %>" alt="Tentang Sekolah" class="w-100 h-100" style="object-fit: cover;">
+          </div>
+        <% } %>
+
+        <div class="content-body text-secondary lh-lg mb-5">
+          <% if (section && section.content) { %>
+            <%- section.content %>
+          <% } else { %>
+            <p>Berdiri sejak puluhan tahun lalu, institusi kami konsisten mendedikasikan diri untuk mencetak generasi muda yang tidak hanya unggul secara kognitif namun juga memiliki kepekaan emosional, spiritual, serta kesadaran kewarganegaraan yang tangguh.</p>
+            <p>Dengan memadukan kurikulum nasional dan pengayaan internasional, kami memastikan setiap siswa memperoleh bekal holistik yang mempersiapkan mereka menghadapi era disrupsi teknologi dan keterbukaan global.</p>
+          <% } %>
+        </div>
+
+        <h4 class="fw-bold mb-3">Fasilitas Utama Sekolah</h4>
+        <div class="row g-3">
+          <% if (facilities && facilities.length > 0) { %>
+            <% facilities.forEach(function(f) { %>
+              <div class="col-sm-6">
+                <div class="p-3 bg-white border rounded d-flex gap-3 align-items-center">
+                  <div class="p-2 bg-light rounded text-primary"><i data-lucide="check" style="width: 18px; height: 18px;"></i></div>
+                  <div>
+                    <h6 class="fw-bold mb-0"><%= f.name %></h6>
+                    <small class="text-muted"><%= f.category %></small>
+                  </div>
+                </div>
+              </div>
+            <% }); %>
+          <% } %>
+        </div>
+      </div>
+
+      <!-- Sidebar Quick Links -->
+      <div class="col-lg-4">
+        <div class="card border rounded-3 p-4 shadow-sm mb-4">
+          <h5 class="fw-bold mb-3">Profil Lembaga</h5>
+          <div class="list-group list-group-flush">
+            <a href="/profile/about" class="list-group-item list-group-item-action active fw-bold">Tentang Sekolah</a>
+            <a href="/profile/history" class="list-group-item list-group-item-action">Sejarah Singkat</a>
+            <a href="/profile/visi-misi" class="list-group-item list-group-item-action">Visi & Misi</a>
+            <a href="/profile/structure" class="list-group-item list-group-item-action">Struktur Organisasi</a>
+            <a href="/profile/headmaster" class="list-group-item list-group-item-action">Sambutan Kepala Sekolah</a>
+          </div>
+        </div>
+
+        <div class="card border rounded-3 p-4 shadow-sm bg-primary text-white">
+          <h5 class="fw-bold text-white mb-2">Ingin Bergabung?</h5>
+          <p class="text-white-50 small mb-3">Pendaftaran Peserta Didik Baru (PPDB) telah dibuka secara daring.</p>
+          <a href="/ppdb" class="btn btn-secondary-custom btn-sm">Daftar Sekarang</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<%- include('../../partials/footer') %>

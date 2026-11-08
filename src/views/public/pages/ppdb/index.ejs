@@ -1,0 +1,205 @@
+<%- include('../../partials/head') %>
+<%- include('../../partials/header') %>
+
+<main class="py-5">
+  <div class="container">
+    <nav aria-label="breadcrumb" class="mb-4">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Beranda</a></li>
+        <li class="breadcrumb-item active" aria-current="page">PPDB Online</li>
+      </ol>
+    </nav>
+
+    <!-- Header Banner -->
+    <div class="ppdb-banner mb-5">
+      <div class="row align-items-center">
+        <div class="col-lg-8">
+          <span class="badge bg-warning text-dark px-3 py-2 fw-bold text-uppercase mb-3">Tahun Ajaran <%= ppdbSettings.ppdb_year || '2025/2026' %></span>
+          <h1 class="text-white fw-bold mb-3">Penerimaan Peserta Didik Baru (PPDB)</h1>
+          <p class="text-white-50 mb-0">Sistem pendaftaran daring satu pintu untuk menjaring calon siswa terbaik yang berkarakter, berdaya saing, dan berprestasi.</p>
+        </div>
+        <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+          <a href="#formulir" class="btn btn-secondary-custom btn-lg me-2">Formulir Daftar</a>
+          <a href="/ppdb/status" class="btn btn-outline-white btn-lg">Cek Status</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Requirements & Schedule Row -->
+    <div class="row g-4 mb-5">
+      <!-- Persyaratan -->
+      <div class="col-lg-7">
+        <div class="card border rounded-3 p-4 shadow-sm h-100">
+          <h4 class="fw-bold mb-3 d-flex align-items-center gap-2">
+            <i data-lucide="check-square" style="width: 22px; height: 22px; color: var(--color-primary);"></i>
+            <span>Persyaratan Pendaftaran</span>
+          </h4>
+          <p class="text-muted small mb-4">Pastikan Anda telah menyiapkan dokumen kelengkapan berikut sebelum mengisi formulir:</p>
+          
+          <% if (requirements && requirements.length > 0) { %>
+            <ul class="list-group list-group-flush">
+              <% requirements.forEach(function(req) { %>
+                <li class="list-group-item d-flex align-items-start gap-3 px-0">
+                  <i data-lucide="<%= req.isRequired ? 'alert-circle' : 'file' %>" style="width: 18px; height: 18px; color: <%= req.isRequired ? 'var(--color-primary)' : 'var(--color-text-muted)' %>; margin-top: 3px; flex-shrink: 0;"></i>
+                  <div>
+                    <strong class="d-block text-dark"><%= req.title %></strong>
+                    <% if (req.description) { %>
+                      <small class="text-secondary"><%= req.description %></small>
+                    <% } %>
+                  </div>
+                </li>
+              <% }); %>
+            </ul>
+          <% } else { %>
+            <ul class="list-unstyled d-flex flex-column gap-2 text-secondary small">
+              <li>&bull; Salinan Ijazah / Surat Keterangan Lulus (SKL) SMP/MTs sederajat</li>
+              <li>&bull; Salinan Kartu Keluarga (KK) dan Akta Kelahiran</li>
+              <li>&bull; Pas foto formal terbaru berwarna ukuran 3x4</li>
+              <li>&bull; Salinan piagam prestasi kejuaraan (jalur prestasi jika ada)</li>
+            </ul>
+          <% } %>
+        </div>
+      </div>
+
+      <!-- Jadwal & Kuota -->
+      <div class="col-lg-5">
+        <div class="card border rounded-3 p-4 shadow-sm h-100 bg-light">
+          <h4 class="fw-bold mb-3 d-flex align-items-center gap-2">
+            <i data-lucide="calendar" style="width: 22px; height: 22px; color: var(--color-primary);"></i>
+            <span>Jadwal & Kuota Daya Tampung</span>
+          </h4>
+          <ul class="list-unstyled d-flex flex-column gap-3 mb-4">
+            <li class="d-flex justify-content-between border-bottom pb-2">
+              <span class="text-muted">Status Jalur:</span>
+              <strong class="text-success"><%= ppdbSettings.ppdb_status === 'closed' ? 'Pendaftaran Ditutup' : 'Pendaftaran Dibuka' %></strong>
+            </li>
+            <li class="d-flex justify-content-between border-bottom pb-2">
+              <span class="text-muted">Total Daya Tampung:</span>
+              <strong><%= ppdbSettings.ppdb_quota || '320 Siswa (10 Rombel)' %></strong>
+            </li>
+            <li class="d-flex justify-content-between border-bottom pb-2">
+              <span class="text-muted">Mulai Pendaftaran:</span>
+              <strong><%= ppdbSettings.ppdb_start_date || '01 Mei 2025' %></strong>
+            </li>
+            <li class="d-flex justify-content-between border-bottom pb-2">
+              <span class="text-muted">Batas Akhir Berkas:</span>
+              <strong><%= ppdbSettings.ppdb_end_date || '30 Juni 2025' %></strong>
+            </li>
+            <li class="d-flex justify-content-between">
+              <span class="text-muted">Pengumuman Kelulusan:</span>
+              <strong class="text-primary"><%= ppdbSettings.ppdb_announcement_date || '05 Juli 2025' %></strong>
+            </li>
+          </ul>
+
+          <div class="p-3 bg-white border rounded">
+            <div class="small fw-bold text-dark mb-1">Sudah Mendaftar?</div>
+            <p class="small text-muted mb-2">Periksa status verifikasi berkas formulir Anda secara berkala.</p>
+            <a href="/ppdb/status" class="btn btn-outline-primary btn-sm w-100">Cek Status Sekarang</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Registration Form Section -->
+    <div id="formulir" class="card border rounded-3 p-4 p-md-5 shadow-sm">
+      <div class="text-center mb-4">
+        <span class="section-tag">Pendaftaran Mandiri</span>
+        <h2 class="fw-bold mb-2">Formulir Registrasi Calon Siswa Baru</h2>
+        <p class="text-secondary small">Isi biodata secara cermat dan teliti sesuai dengan dokumen kependudukan resmi.</p>
+      </div>
+
+      <form action="/ppdb/register" method="POST" enctype="multipart/form-data" id="ppdbRegisterForm">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+        <h5 class="fw-bold text-primary border-bottom pb-2 mb-3">1. Identitas Calon Siswa</h5>
+        <div class="row g-3 mb-4">
+          <div class="col-md-8">
+            <label class="form-label">Nama Lengkap Siswa <span class="text-danger">*</span></label>
+            <input type="text" name="fullName" class="form-control" placeholder="Sesuai akta kelahiran" required>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Jenis Kelamin <span class="text-danger">*</span></label>
+            <select name="gender" class="form-select" required>
+              <option value="">-- Pilih --</option>
+              <option value="Laki-laki">Laki-laki</option>
+              <option value="Perempuan">Perempuan</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Tempat Lahir</label>
+            <input type="text" name="birthPlace" class="form-control" placeholder="Kota kelahiran">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Tanggal Lahir</label>
+            <input type="date" name="birthDate" class="form-control">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Asal Sekolah (SMP/MTs)</label>
+            <input type="text" name="originSchool" class="form-control" placeholder="Contoh: SMPN 1 Jakarta">
+          </div>
+          <div class="col-12">
+            <label class="form-label">Alamat Tempat Tinggal Lengkap</label>
+            <textarea name="address" rows="2" class="form-control" placeholder="Jalan, RT/RW, Kelurahan, Kecamatan, Kota"></textarea>
+          </div>
+        </div>
+
+        <h5 class="fw-bold text-primary border-bottom pb-2 mb-3">2. Data Orang Tua / Wali</h5>
+        <div class="row g-3 mb-4">
+          <div class="col-md-4">
+            <label class="form-label">Nama Orang Tua / Wali <span class="text-danger">*</span></label>
+            <input type="text" name="parentName" class="form-control" placeholder="Nama ayah/ibu/wali" required>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Nomor WhatsApp / HP Aktif <span class="text-danger">*</span></label>
+            <input type="tel" name="parentPhone" class="form-control" placeholder="Contoh: 081234567890" required>
+            <div class="form-text">Digunakan untuk konfirmasi pendaftaran dan cek status.</div>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Alamat Email Aktif</label>
+            <input type="email" name="parentEmail" class="form-control" placeholder="email@gmail.com">
+          </div>
+        </div>
+
+        <h5 class="fw-bold text-primary border-bottom pb-2 mb-3">3. Pilihan Program & Dokumen</h5>
+        <div class="row g-3 mb-4">
+          <div class="col-md-6">
+            <label class="form-label">Peminatan yang Dituju</label>
+            <select name="programChoice" class="form-select">
+              <option value="">-- Pilih Program Peminatan --</option>
+              <% if (programs && programs.length > 0) { %>
+                <% programs.forEach(function(prog) { %>
+                  <option value="<%= prog.name %>"><%= prog.name %></option>
+                <% }); %>
+              <% } else { %>
+                <option value="MIPA (Matematika & IPA)">MIPA (Matematika & IPA)</option>
+                <option value="IPS (Ilmu Pengetahuan Sosial)">IPS (Ilmu Pengetahuan Sosial)</option>
+                <option value="Bahasa & Budaya">Bahasa & Budaya</option>
+              <% } %>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Unggah Berkas Persyaratan (PDF/ZIP/JPG, Max 10MB)</label>
+            <input type="file" name="document" class="form-control" accept=".pdf,.zip,.jpg,.jpeg,.png">
+            <div class="form-text">Gabungan scan Akta, KK, dan SKL/Rapor.</div>
+          </div>
+        </div>
+
+        <div class="form-check mb-4">
+          <input class="form-check-input" type="checkbox" id="agreeCheck" required>
+          <label class="form-check-label small text-secondary" for="agreeCheck">
+            Saya menyatakan bahwa data yang diisi adalah benar dan sah. Apabila di kemudian hari ditemukan ketidaksesuaian, saya bersedia menerima sanksi pembatalan kelulusan seleksi.
+          </label>
+        </div>
+
+        <div class="text-end">
+          <button type="submit" class="btn btn-secondary-custom btn-lg d-inline-flex align-items-center gap-2">
+            <i data-lucide="send" style="width: 18px; height: 18px;"></i>
+            <span>Kirim Formulir Pendaftaran</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</main>
+
+<%- include('../../partials/footer') %>

@@ -1,0 +1,108 @@
+<%- include('../partials/admin-head') %>
+<%- include('../partials/admin-sidebar') %>
+
+<div class="admin-main">
+  <%- include('../partials/admin-topbar') %>
+
+  <div class="admin-content">
+    <%- include('../partials/alert') %>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h3 class="fw-bold mb-1">Tambah Data Guru</h3>
+        <p class="text-muted small mb-0">Lengkapi data profil tenaga pendidik sekolah.</p>
+      </div>
+      <a href="/admin/teachers" class="btn btn-outline-secondary btn-sm">&larr; Kembali ke Daftar</a>
+    </div>
+
+    <form action="/admin/teachers" method="POST" enctype="multipart/form-data">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+      <div class="row g-4">
+        <div class="col-lg-8">
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <h5>Informasi Guru</h5>
+            </div>
+            <div class="admin-card-body">
+              <div class="row g-3 mb-3">
+                <div class="col-md-7">
+                  <label class="form-label">Nama Lengkap & Gelar <span class="text-danger">*</span></label>
+                  <input type="text" name="name" class="form-control" placeholder="Contoh: Drs. H. Ahmad Fauzi, M.Pd." required>
+                </div>
+                <div class="col-md-5">
+                  <label class="form-label">NIP</label>
+                  <input type="text" name="nip" class="form-control" placeholder="1980xxxx xxxxx x xxx">
+                </div>
+              </div>
+
+              <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                  <label class="form-label">Jabatan</label>
+                  <input type="text" name="position" class="form-control" placeholder="Guru Madya / Wali Kelas" value="Guru Mata Pelajaran">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Mata Pelajaran yang Diampu</label>
+                  <input type="text" name="subject" class="form-control" placeholder="Contoh: Fisika / Bahasa Indonesia">
+                </div>
+              </div>
+
+              <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                  <label class="form-label">Pendidikan Terakhir</label>
+                  <input type="text" name="education" class="form-control" placeholder="S1 Pendidikan Fisika (UNJ)">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Alamat Email</label>
+                  <input type="email" name="email" class="form-control" placeholder="guru@sekolah.sch.id">
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Biografi Singkat</label>
+                <textarea name="bio" rows="4" class="form-control" placeholder="Tuliskan latar belakang pendidikan dan pengalaman mengajar..."></textarea>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Teks Sambutan (Jika Kepala Sekolah)</label>
+                <textarea name="greetingText" rows="6" class="form-control" placeholder="Sambutan resmi yang tampil di halaman profil dan beranda..."></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <h5>Foto & Status</h5>
+            </div>
+            <div class="admin-card-body">
+              <div class="mb-3">
+                <label class="form-label">Foto Profil Formal</label>
+                <input type="file" name="photo" class="form-control" accept="image/*">
+                <div class="form-text">Rasio 3:4 atau 1:1, latar belakang rapi.</div>
+              </div>
+
+              <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" name="isHeadmaster" value="true" id="headmasterSwitch">
+                <label class="form-check-label fw-bold small" for="headmasterSwitch">Tandai Sebagai Kepala Sekolah</label>
+              </div>
+
+              <div class="form-check form-switch mb-4">
+                <input class="form-check-input" type="checkbox" name="isActive" value="true" id="activeSwitch" checked>
+                <label class="form-check-label fw-bold small" for="activeSwitch">Status Guru Aktif</label>
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100 d-inline-flex justify-content-center align-items-center gap-1">
+                <i data-lucide="check" style="width: 16px; height: 16px;"></i>
+                <span>Simpan Data Guru</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <%- include('../partials/admin-footer') %>
+</div>

@@ -1,0 +1,123 @@
+<%- include('../../partials/head') %>
+<%- include('../../partials/header') %>
+
+<main class="py-5">
+  <div class="container">
+    <nav aria-label="breadcrumb" class="mb-4">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Beranda</a></li>
+        <li class="breadcrumb-item"><a href="/ppdb">PPDB Online</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Cek Status</li>
+      </ol>
+    </nav>
+
+    <div class="text-center mb-5">
+      <span class="section-tag">Status Verifikasi</span>
+      <h1 class="fw-bold mb-2">Cek Status Pendaftaran PPDB</h1>
+      <p class="text-secondary max-w-600 mx-auto">Masukkan nomor registrasi dan nomor telepon yang didaftarkan untuk melihat perkembangan berkas Anda.</p>
+    </div>
+
+    <!-- Search Form -->
+    <div class="row justify-content-center mb-5">
+      <div class="col-lg-6">
+        <div class="card border rounded-3 p-4 shadow-sm">
+          <form action="/ppdb/status" method="POST">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <div class="mb-3">
+              <label class="form-label">Nomor Pendaftaran PPDB</label>
+              <input type="text" name="registrationNo" class="form-control" placeholder="Contoh: REG-20250501-1234" value="<%= regParam %>" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Nomor WhatsApp / HP Orang Tua</label>
+              <input type="tel" name="parentPhone" class="form-control" placeholder="Nomor telepon yang didaftarkan">
+              <div class="form-text">Digunakan sebagai kunci verifikasi identitas pendaftar.</div>
+            </div>
+            <button type="submit" class="btn btn-primary w-100 d-inline-flex justify-content-center align-items-center gap-2">
+              <i data-lucide="search" style="width: 16px; height: 16px;"></i>
+              <span>Periksa Data Sekarang</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Applicant Status Result Card -->
+    <% if (applicant) { %>
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="card border rounded-3 p-4 p-md-5 shadow-sm">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 border-bottom pb-4 mb-4">
+              <div>
+                <span class="text-muted small d-block">Nomor Registrasi:</span>
+                <h3 class="fw-bold text-primary mb-0"><%= applicant.registrationNo %></h3>
+              </div>
+              <div>
+                <% if (applicant.status === 'accepted') { %>
+                  <span class="badge bg-success fs-6 px-3 py-2 text-uppercase">DITERIMA / LOLOS SELEKSI</span>
+                <% } else if (applicant.status === 'verified') { %>
+                  <span class="badge bg-info text-dark fs-6 px-3 py-2 text-uppercase">BERKAS TERVERIFIKASI</span>
+                <% } else if (applicant.status === 'rejected') { %>
+                  <span class="badge bg-danger fs-6 px-3 py-2 text-uppercase">TIDAK LOLOS SELEKSI</span>
+                <% } else { %>
+                  <span class="badge bg-warning text-dark fs-6 px-3 py-2 text-uppercase">MENUNGGU VERIFIKASI</span>
+                <% } %>
+              </div>
+            </div>
+
+            <!-- Notes from Admin -->
+            <% if (applicant.notes) { %>
+              <div class="alert alert-info border d-flex gap-3 align-items-start mb-4">
+                <i data-lucide="info" style="width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px;"></i>
+                <div>
+                  <strong class="d-block">Catatan Panitia PPDB:</strong>
+                  <div class="small"><%= applicant.notes %></div>
+                </div>
+              </div>
+            <% } %>
+
+            <h5 class="fw-bold mb-3">Ringkasan Biodata Calon Siswa</h5>
+            <div class="row g-3">
+              <div class="col-sm-6">
+                <small class="text-muted d-block">Nama Lengkap</small>
+                <strong><%= applicant.fullName %></strong>
+              </div>
+              <div class="col-sm-6">
+                <small class="text-muted d-block">Jenis Kelamin</small>
+                <strong><%= applicant.gender %></strong>
+              </div>
+              <div class="col-sm-6">
+                <small class="text-muted d-block">Asal Sekolah</small>
+                <strong><%= applicant.originSchool || '-' %></strong>
+              </div>
+              <div class="col-sm-6">
+                <small class="text-muted d-block">Pilihan Peminatan</small>
+                <strong><%= applicant.programChoice || '-' %></strong>
+              </div>
+              <div class="col-sm-6">
+                <small class="text-muted d-block">Nama Orang Tua / Wali</small>
+                <strong><%= applicant.parentName %></strong>
+              </div>
+              <div class="col-sm-6">
+                <small class="text-muted d-block">Nomor Telepon</small>
+                <strong><%= applicant.parentPhone %></strong>
+              </div>
+              <div class="col-12">
+                <small class="text-muted d-block">Waktu Pengajuan Pendaftaran</small>
+                <span><%= formatDate(applicant.createdAt) %></span>
+              </div>
+            </div>
+
+            <div class="mt-4 pt-4 border-top text-center">
+              <button onclick="window.print()" class="btn btn-outline-secondary btn-sm d-inline-flex align-items-center gap-2">
+                <i data-lucide="printer" style="width: 14px; height: 14px;"></i>
+                <span>Cetak Bukti Pendaftaran</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% } %>
+  </div>
+</main>
+
+<%- include('../../partials/footer') %>

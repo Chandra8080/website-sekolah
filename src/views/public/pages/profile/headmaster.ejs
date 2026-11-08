@@ -1,0 +1,49 @@
+<%- include('../../partials/head') %>
+<%- include('../../partials/header') %>
+
+<main class="py-5">
+  <div class="container">
+    <nav aria-label="breadcrumb" class="mb-4">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Beranda</a></li>
+        <li class="breadcrumb-item">Profil</li>
+        <li class="breadcrumb-item active" aria-current="page">Sambutan Kepala Sekolah</li>
+      </ol>
+    </nav>
+
+    <div class="row g-5 align-items-start">
+      <div class="col-lg-4 text-center">
+        <div class="card border rounded-3 p-3 shadow-sm">
+          <div class="rounded-3 overflow-hidden mb-3" style="max-height: 380px;">
+            <img src="<%= (headmaster && headmaster.photo) || 'https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=600&auto=format&fit=crop' %>" alt="<%= (headmaster && headmaster.name) || 'Kepala Sekolah' %>" class="w-100 h-100" style="object-fit: cover;">
+          </div>
+          <h4 class="fw-bold mb-1"><%= (headmaster && headmaster.name) || 'Dr. H. Bambang Sudrajat, M.Pd.' %></h4>
+          <div class="text-secondary small mb-2"><%= (headmaster && headmaster.position) || 'Kepala Sekolah' %></div>
+          <% if (headmaster && headmaster.nip) { %>
+            <div class="text-muted small">NIP. <%= headmaster.nip %></div>
+          <% } %>
+        </div>
+      </div>
+
+      <div class="col-lg-8">
+        <span class="section-tag">Pesan & Amanat Pimpinan</span>
+        <h1 class="fw-bold mb-4">Membangun Karakter Luhur, Menjemput Masa Depan</h1>
+
+        <div class="content-body text-secondary lh-lg fs-5">
+          <% if (headmaster && headmaster.greetingText) { %>
+            <%- headmaster.greetingText %>
+          <% } else { %>
+            <p>Assalamu'alaikum Warahmatullahi Wabarakatuh,</p>
+            <p>Salam sejahtera bagi kita semua.</p>
+            <p>Puji dan syukur senantiasa kita panjatkan ke hadirat Tuhan Yang Maha Kuasa atas segala limpahan rahmat dan karunia-Nya. Selamat datang di portal informasi resmi sekolah kami yang dirancang sebagai sarana komunikasi, keterbukaan informasi, dan penghubung sinergis antara sekolah, orang tua, serta masyarakat luas.</p>
+            <p>Pendidikan di era kontemporer menuntut kita untuk tidak hanya mencerdaskan akal semata, tetapi juga membina budi pekerti, resiliensi emosional, serta kepedulian lingkungan hidup. Setiap program yang kami selenggarakan diarahkan untuk menumbuhkan rasa percaya diri dan daya juang siswa agar mampu bersaing secara global tanpa kehilangan akar budaya bangsanya.</p>
+            <p>Kami menyampaikan apresiasi dan terima kasih mendalam kepada seluruh pendidik, tenaga kependidikan, komite sekolah, dan segenap orang tua yang senantiasa bahu-membahu menyukseskan visi luhur ini.</p>
+            <p class="mt-4">Wassalamu'alaikum Warahmatullahi Wabarakatuh.</p>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<%- include('../../partials/footer') %>

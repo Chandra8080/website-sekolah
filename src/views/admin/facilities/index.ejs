@@ -1,0 +1,76 @@
+<%- include('../partials/admin-head') %>
+<%- include('../partials/admin-sidebar') %>
+
+<div class="admin-main">
+  <%- include('../partials/admin-topbar') %>
+
+  <div class="admin-content">
+    <%- include('../partials/alert') %>
+
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+      <div>
+        <h3 class="fw-bold mb-1"><%= pageTitle %></h3>
+        <p class="text-muted small mb-0">Kelola sarana belajar, gedung, dan fasilitas pendukung kampus.</p>
+      </div>
+      <a href="/admin/facilities/create" class="btn btn-primary btn-sm d-inline-flex align-items-center gap-1">
+        <i data-lucide="plus" style="width: 14px; height: 14px;"></i>
+        <span>Tambah Fasilitas</span>
+      </a>
+    </div>
+
+    <div class="admin-card">
+      <div class="table-responsive">
+        <table class="table-custom">
+          <thead>
+            <tr>
+              <th>Foto</th>
+              <th>Nama Fasilitas</th>
+              <th>Kategori</th>
+              <th>Status</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (facilities && facilities.length > 0) { %>
+              <% facilities.forEach(function(f) { %>
+                <tr>
+                  <td style="width: 70px;">
+                    <div style="width: 60px; height: 44px; border-radius: 6px; overflow: hidden; background: #e2e8f0;">
+                      <img src="<%= f.imageUrl || 'https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=200&auto=format&fit=crop' %>" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                  </td>
+                  <td>
+                    <div class="fw-bold text-dark"><%= f.name %></div>
+                    <small class="text-muted"><%= truncate(f.description, 60) %></small>
+                  </td>
+                  <td><span class="badge bg-light text-primary"><%= f.category %></span></td>
+                  <td>
+                    <span class="status-badge <%= f.isActive ? 'active' : 'inactive' %>">
+                      <%= f.isActive ? 'Aktif' : 'Nonaktif' %>
+                    </span>
+                  </td>
+                  <td>
+                    <div class="d-flex gap-1">
+                      <a href="/admin/facilities/<%= f.id %>/edit" class="btn-action" title="Edit"><i data-lucide="edit-2" style="width: 14px; height: 14px;"></i></a>
+                      <form action="/admin/facilities/<%= f.id %>/delete" method="POST" onsubmit="return confirm('Hapus fasilitas ini?');" style="display: inline;">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <button type="submit" class="btn-action delete" title="Hapus"><i data-lucide="trash" style="width: 14px; height: 14px;"></i></button>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+              <% }); %>
+            <% } else { %>
+              <tr>
+                <td colspan="5" class="text-center text-muted py-4">Belum ada data fasilitas.</td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+      <%- include('../partials/pagination') %>
+    </div>
+  </div>
+
+  <%- include('../partials/admin-footer') %>
+</div>

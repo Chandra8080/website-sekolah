@@ -1,0 +1,80 @@
+<%- include('../partials/admin-head') %>
+<%- include('../partials/admin-sidebar') %>
+
+<div class="admin-main">
+  <%- include('../partials/admin-topbar') %>
+
+  <div class="admin-content">
+    <%- include('../partials/alert') %>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h3 class="fw-bold mb-1"><%= pageTitle %></h3>
+        <p class="text-muted small mb-0">Kelola kegiatan ekstrakurikuler, pembina, dan jadwal latihan.</p>
+      </div>
+      <a href="/admin/extracurriculars/create" class="btn btn-primary btn-sm d-inline-flex align-items-center gap-1">
+        <i data-lucide="plus" style="width: 14px; height: 14px;"></i>
+        <span>Tambah Ekskul</span>
+      </a>
+    </div>
+
+    <div class="admin-card">
+      <div class="table-responsive">
+        <table class="table-custom">
+          <thead>
+            <tr>
+              <th>Foto</th>
+              <th>Nama Ekstrakurikuler</th>
+              <th>Kategori</th>
+              <th>Jadwal Latihan</th>
+              <th>Guru Pembina</th>
+              <th>Status</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (extracurriculars && extracurriculars.length > 0) { %>
+              <% extracurriculars.forEach(function(e) { %>
+                <tr>
+                  <td style="width: 70px;">
+                    <div style="width: 60px; height: 44px; border-radius: 6px; overflow: hidden; background: #e2e8f0;">
+                      <img src="<%= e.imageUrl || 'https://images.unsplash.com/photo-1526676037777-05a232554f77?q=80&w=200&auto=format&fit=crop' %>" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                  </td>
+                  <td>
+                    <div class="fw-bold text-dark"><%= e.name %></div>
+                    <small class="text-muted"><%= truncate(e.description, 50) %></small>
+                  </td>
+                  <td><span class="badge bg-light text-primary"><%= e.category || 'Bakat Minat' %></span></td>
+                  <td class="small text-muted"><%= e.schedule || '-' %></td>
+                  <td class="small fw-semibold"><%= e.teacher || '-' %></td>
+                  <td>
+                    <span class="status-badge <%= e.isActive ? 'active' : 'inactive' %>">
+                      <%= e.isActive ? 'Aktif' : 'Nonaktif' %>
+                    </span>
+                  </td>
+                  <td>
+                    <div class="d-flex gap-1">
+                      <a href="/admin/extracurriculars/<%= e.id %>/edit" class="btn-action" title="Edit"><i data-lucide="edit-2" style="width: 14px; height: 14px;"></i></a>
+                      <form action="/admin/extracurriculars/<%= e.id %>/delete" method="POST" onsubmit="return confirm('Hapus ekstrakurikuler ini?');" style="display: inline;">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <button type="submit" class="btn-action delete" title="Hapus"><i data-lucide="trash" style="width: 14px; height: 14px;"></i></button>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+              <% }); %>
+            <% } else { %>
+              <tr>
+                <td colspan="7" class="text-center text-muted py-4">Belum ada ekstrakurikuler yang terdaftar.</td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+      <%- include('../partials/pagination') %>
+    </div>
+  </div>
+
+  <%- include('../partials/admin-footer') %>
+</div>

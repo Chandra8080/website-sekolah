@@ -1,0 +1,87 @@
+<%- include('../partials/admin-head') %>
+<%- include('../partials/admin-sidebar') %>
+
+<div class="admin-main">
+  <%- include('../partials/admin-topbar') %>
+
+  <div class="admin-content">
+    <%- include('../partials/alert') %>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h3 class="fw-bold mb-1">Kategori Galeri</h3>
+        <p class="text-muted small mb-0">Kelola album kategori untuk pengelompokan dokumentasi foto.</p>
+      </div>
+      <a href="/admin/gallery" class="btn btn-outline-secondary btn-sm">&larr; Kembali ke Galeri</a>
+    </div>
+
+    <div class="row g-4">
+      <!-- Create Category Form -->
+      <div class="col-lg-4">
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h5>Tambah Kategori Baru</h5>
+          </div>
+          <div class="admin-card-body">
+            <form action="/admin/gallery/categories" method="POST">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+              <div class="mb-3">
+                <label class="form-label">Nama Kategori <span class="text-danger">*</span></label>
+                <input type="text" name="name" class="form-control" placeholder="Contoh: Upacara & Apel" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Deskripsi</label>
+                <textarea name="description" rows="3" class="form-control" placeholder="Keterangan singkat..."></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary w-100">Simpan Kategori</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Categories Table -->
+      <div class="col-lg-8">
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h5>Daftar Kategori Galeri</h5>
+          </div>
+          <div class="table-responsive">
+            <table class="table-custom">
+              <thead>
+                <tr>
+                  <th>Nama Kategori</th>
+                  <th>Slug</th>
+                  <th>Jumlah Foto</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if (categories && categories.length > 0) { %>
+                  <% categories.forEach(function(cat) { %>
+                    <tr>
+                      <td class="fw-bold text-dark"><%= cat.name %></td>
+                      <td class="small text-muted"><%= cat.slug %></td>
+                      <td><span class="badge bg-light text-primary"><%= cat._count.galleries %> foto</span></td>
+                      <td>
+                        <form action="/admin/gallery/categories/<%= cat.id %>/delete" method="POST" onsubmit="return confirm('Hapus kategori ini?');" style="display: inline;">
+                          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                          <button type="submit" class="btn-action delete" title="Hapus"><i data-lucide="trash" style="width: 14px; height: 14px;"></i></button>
+                        </form>
+                      </td>
+                    </tr>
+                  <% }); %>
+                <% } else { %>
+                  <tr>
+                    <td colspan="4" class="text-center text-muted py-4">Belum ada kategori yang dibuat.</td>
+                  </tr>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%- include('../partials/admin-footer') %>
+</div>

@@ -1,0 +1,134 @@
+<%- include('../partials/admin-head') %>
+<%- include('../partials/admin-sidebar') %>
+
+<div class="admin-main">
+  <%- include('../partials/admin-topbar') %>
+
+  <div class="admin-content">
+    <%- include('../partials/alert') %>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h3 class="fw-bold mb-1"><%= pageTitle %></h3>
+        <p class="text-muted small mb-0">Atur profil institusi, identitas, kontak, dan informasi dasar sekolah.</p>
+      </div>
+      <a href="/admin/settings/colors" class="btn btn-outline-primary btn-sm d-inline-flex align-items-center gap-1">
+        <i data-lucide="palette" style="width: 14px; height: 14px;"></i>
+        <span>Pengaturan Warna Tema</span>
+      </a>
+    </div>
+
+    <!-- Group Tabs -->
+    <ul class="nav nav-pills mb-4 gap-2">
+      <li class="nav-item">
+        <a class="nav-link <%= activeTab === 'general' ? 'active' : '' %>" href="/admin/settings?tab=general">Identitas Utama</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link <%= activeTab === 'contact' ? 'active' : '' %>" href="/admin/settings?tab=contact">Alamat & Kontak</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link <%= activeTab === 'seo' ? 'active' : '' %>" href="/admin/settings?tab=seo">Meta & SEO</a>
+      </li>
+    </ul>
+
+    <div class="admin-card">
+      <div class="admin-card-header">
+        <h5 class="text-capitalize">Konfigurasi: <%= activeTab %></h5>
+      </div>
+      <div class="admin-card-body">
+        <form action="/admin/settings?tab=<%= activeTab %>" method="POST" enctype="multipart/form-data">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+          <% if (activeTab === 'general') { %>
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Nama Sekolah / Lembaga</label>
+                <input type="text" name="school_name" class="form-control" value="<%= settings.school_name || '' %>">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Semboyan / Tagline</label>
+                <input type="text" name="school_tagline" class="form-control" value="<%= settings.school_tagline || '' %>">
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Deskripsi Profil Singkat</label>
+              <textarea name="school_description" rows="3" class="form-control"><%= settings.school_description || '' %></textarea>
+            </div>
+
+            <div class="row g-3 mb-4">
+              <div class="col-md-6">
+                <label class="form-label">Logo Sekolah</label>
+                <% if (settings.school_logo) { %>
+                  <div class="mb-2"><img src="<%= settings.school_logo %>" alt="Logo" style="height: 50px;"></div>
+                <% } %>
+                <input type="file" name="school_logo" class="form-control" accept="image/*">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Favicon Sekolah</label>
+                <% if (settings.school_favicon) { %>
+                  <div class="mb-2"><img src="<%= settings.school_favicon %>" alt="Favicon" style="height: 32px;"></div>
+                <% } %>
+                <input type="file" name="school_favicon" class="form-control" accept="image/*">
+              </div>
+            </div>
+
+          <% } else if (activeTab === 'contact') { %>
+            <div class="mb-3">
+              <label class="form-label">Alamat Lengkap</label>
+              <textarea name="school_address" rows="2" class="form-control"><%= settings.school_address || '' %></textarea>
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Nomor Telepon Kantor</label>
+                <input type="text" name="school_phone" class="form-control" value="<%= settings.school_phone || '' %>">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Nomor WhatsApp Resmi</label>
+                <input type="text" name="school_whatsapp" class="form-control" value="<%= settings.school_whatsapp || '' %>">
+              </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Alamat Email Resmi</label>
+                <input type="email" name="school_email" class="form-control" value="<%= settings.school_email || '' %>">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Jam Operasional Layanan</label>
+                <input type="text" name="school_hours" class="form-control" value="<%= settings.school_hours || '' %>">
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label">Google Maps Embed URL</label>
+              <input type="text" name="school_maps_embed" class="form-control" value="<%= settings.school_maps_embed || '' %>">
+              <div class="form-text">Salin link 'src' dari fitur Sematkan Peta pada Google Maps.</div>
+            </div>
+
+          <% } else if (activeTab === 'seo') { %>
+            <div class="mb-3">
+              <label class="form-label">Meta Title Default</label>
+              <input type="text" name="meta_title" class="form-control" value="<%= settings.meta_title || '' %>">
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label">Meta Description Default</label>
+              <textarea name="meta_description" rows="3" class="form-control"><%= settings.meta_description || '' %></textarea>
+            </div>
+          <% } %>
+
+          <div class="text-end">
+            <button type="submit" class="btn btn-primary d-inline-flex align-items-center gap-1">
+              <i data-lucide="save" style="width: 16px; height: 16px;"></i>
+              <span>Simpan Pengaturan</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <%- include('../partials/admin-footer') %>
+</div>

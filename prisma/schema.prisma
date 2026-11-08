@@ -1,0 +1,460 @@
+// This is your Prisma schema file
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  name         String   @db.VarChar(100)
+  email        String   @unique @db.VarChar(150)
+  username     String   @unique @db.VarChar(50)
+  password     String   @db.VarChar(255)
+  roleId       Int
+  role         Role     @relation(fields: [roleId], references: [id])
+  avatar       String?  @db.VarChar(255)
+  isActive     Boolean  @default(true)
+  lastLoginAt  DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  activityLogs ActivityLog[]
+  
+  @@map("users")
+}
+
+model Role {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique @db.VarChar(50)
+  slug        String   @unique @db.VarChar(50)
+  description String?  @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  users       User[]
+  permissions RolePermission[]
+  
+  @@map("roles")
+}
+
+model Permission {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique @db.VarChar(100)
+  slug        String   @unique @db.VarChar(100)
+  module      String   @db.VarChar(50)
+  description String?  @db.Text
+  createdAt   DateTime @default(now())
+  roles       RolePermission[]
+  
+  @@map("permissions")
+}
+
+model RolePermission {
+  id           Int        @id @default(autoincrement())
+  roleId       Int
+  permissionId Int
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+  
+  @@unique([roleId, permissionId])
+  @@map("role_permissions")
+}
+
+model SchoolSetting {
+  id              Int      @id @default(autoincrement())
+  key             String   @unique @db.VarChar(100)
+  value           String?  @db.LongText
+  type            String   @default("text") @db.VarChar(20)
+  group           String   @default("general") @db.VarChar(50)
+  label           String?  @db.VarChar(150)
+  description     String?  @db.Text
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@map("school_settings")
+}
+
+model Menu {
+  id          Int      @id @default(autoincrement())
+  title       String   @db.VarChar(100)
+  url         String?  @db.VarChar(255)
+  icon        String?  @db.VarChar(50)
+  parentId    Int?
+  parent      Menu?    @relation("MenuChildren", fields: [parentId], references: [id])
+  children    Menu[]   @relation("MenuChildren")
+  sortOrder   Int      @default(0)
+  isActive    Boolean  @default(true)
+  target      String   @default("_self") @db.VarChar(10)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("menus")
+}
+
+model HomepageSection {
+  id          Int      @id @default(autoincrement())
+  key         String   @unique @db.VarChar(100)
+  title       String?  @db.VarChar(255)
+  subtitle    String?  @db.VarChar(255)
+  content     String?  @db.LongText
+  imageUrl    String?  @db.VarChar(255)
+  sortOrder   Int      @default(0)
+  isActive    Boolean  @default(true)
+  settings    String?  @db.LongText
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("homepage_sections")
+}
+
+model Teacher {
+  id              Int      @id @default(autoincrement())
+  name            String   @db.VarChar(150)
+  nip             String?  @db.VarChar(30)
+  position        String?  @db.VarChar(100)
+  subject         String?  @db.VarChar(100)
+  education       String?  @db.VarChar(100)
+  photo           String?  @db.VarChar(255)
+  bio             String?  @db.Text
+  email           String?  @db.VarChar(150)
+  category        String   @default("guru") @db.VarChar(50)
+  isActive        Boolean  @default(true)
+  sortOrder       Int      @default(0)
+  isPublished     Boolean  @default(true)
+  isHeadmaster    Boolean  @default(false)
+  greetingText    String?  @db.LongText
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@map("teachers")
+}
+
+model Staff {
+  id          Int      @id @default(autoincrement())
+  name        String   @db.VarChar(150)
+  nip         String?  @db.VarChar(30)
+  position    String?  @db.VarChar(100)
+  department  String?  @db.VarChar(100)
+  photo       String?  @db.VarChar(255)
+  bio         String?  @db.Text
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("staff")
+}
+
+model OrganizationalStructure {
+  id          Int      @id @default(autoincrement())
+  name        String   @db.VarChar(150)
+  position    String   @db.VarChar(100)
+  photo       String?  @db.VarChar(255)
+  parentId    Int?
+  level       Int      @default(0)
+  sortOrder   Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("organizational_structures")
+}
+
+model Program {
+  id          Int      @id @default(autoincrement())
+  name        String   @db.VarChar(150)
+  slug        String   @unique @db.VarChar(200)
+  description String?  @db.LongText
+  imageUrl    String?  @db.VarChar(255)
+  duration    String?  @db.VarChar(50)
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("programs")
+}
+
+model Curriculum {
+  id          Int      @id @default(autoincrement())
+  name        String   @db.VarChar(150)
+  year        String   @db.VarChar(10)
+  description String?  @db.LongText
+  fileUrl     String?  @db.VarChar(255)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("curriculum")
+}
+
+model AcademicCalendar {
+  id          Int      @id @default(autoincrement())
+  title       String   @db.VarChar(200)
+  startDate   DateTime
+  endDate     DateTime?
+  description String?  @db.Text
+  type        String   @default("event") @db.VarChar(50)
+  color       String   @default("#1a3a6b") @db.VarChar(10)
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("academic_calendars")
+}
+
+model Extracurricular {
+  id          Int      @id @default(autoincrement())
+  name        String   @db.VarChar(150)
+  slug        String   @unique @db.VarChar(200)
+  category    String?  @db.VarChar(100)
+  description String?  @db.LongText
+  imageUrl    String?  @db.VarChar(255)
+  schedule    String?  @db.VarChar(200)
+  teacher     String?  @db.VarChar(100)
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("extracurriculars")
+}
+
+model Facility {
+  id          Int      @id @default(autoincrement())
+  name        String   @db.VarChar(150)
+  slug        String   @unique @db.VarChar(200)
+  description String?  @db.LongText
+  imageUrl    String?  @db.VarChar(255)
+  category    String?  @db.VarChar(100)
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("facilities")
+}
+
+model NewsCategory {
+  id          Int      @id @default(autoincrement())
+  name        String   @db.VarChar(100)
+  slug        String   @unique @db.VarChar(150)
+  description String?  @db.Text
+  color       String   @default("#1a3a6b") @db.VarChar(10)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  news        News[]
+  
+  @@map("news_categories")
+}
+
+model News {
+  id          Int          @id @default(autoincrement())
+  title       String       @db.VarChar(255)
+  slug        String       @unique @db.VarChar(300)
+  excerpt     String?      @db.Text
+  content     String       @db.LongText
+  imageUrl    String?      @db.VarChar(255)
+  categoryId  Int?
+  category    NewsCategory? @relation(fields: [categoryId], references: [id])
+  author      String?      @db.VarChar(100)
+  isPublished Boolean      @default(false)
+  publishedAt DateTime?
+  viewCount   Int          @default(0)
+  metaTitle   String?      @db.VarChar(255)
+  metaDesc    String?      @db.Text
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  
+  @@map("news")
+}
+
+model Announcement {
+  id          Int      @id @default(autoincrement())
+  title       String   @db.VarChar(255)
+  content     String   @db.LongText
+  category    String   @default("umum") @db.VarChar(50)
+  priority    String   @default("normal") @db.VarChar(20)
+  attachmentUrl String? @db.VarChar(255)
+  isPublished Boolean  @default(false)
+  publishedAt DateTime?
+  expiredAt   DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("announcements")
+}
+
+model Event {
+  id          Int      @id @default(autoincrement())
+  title       String   @db.VarChar(255)
+  slug        String   @unique @db.VarChar(300)
+  description String?  @db.LongText
+  imageUrl    String?  @db.VarChar(255)
+  location    String?  @db.VarChar(255)
+  startDate   DateTime
+  endDate     DateTime?
+  startTime   String?  @db.VarChar(10)
+  endTime     String?  @db.VarChar(10)
+  status      String   @default("upcoming") @db.VarChar(20)
+  isPublished Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("events")
+}
+
+model Achievement {
+  id          Int      @id @default(autoincrement())
+  title       String   @db.VarChar(255)
+  description String?  @db.LongText
+  imageUrl    String?  @db.VarChar(255)
+  category    String   @default("akademik") @db.VarChar(50)
+  level       String   @default("sekolah") @db.VarChar(50)
+  year        String?  @db.VarChar(10)
+  date        DateTime?
+  isPublished Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("achievements")
+}
+
+model GalleryCategory {
+  id          Int       @id @default(autoincrement())
+  name        String    @db.VarChar(100)
+  slug        String    @unique @db.VarChar(150)
+  description String?   @db.Text
+  isActive    Boolean   @default(true)
+  sortOrder   Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  galleries   Gallery[]
+  
+  @@map("gallery_categories")
+}
+
+model Gallery {
+  id          Int              @id @default(autoincrement())
+  title       String           @db.VarChar(255)
+  description String?          @db.Text
+  imageUrl    String           @db.VarChar(255)
+  thumbnailUrl String?         @db.VarChar(255)
+  categoryId  Int?
+  category    GalleryCategory? @relation(fields: [categoryId], references: [id])
+  isPublished Boolean          @default(true)
+  sortOrder   Int              @default(0)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  
+  @@map("galleries")
+}
+
+model Media {
+  id          Int      @id @default(autoincrement())
+  fileName    String   @db.VarChar(255)
+  originalName String  @db.VarChar(255)
+  mimeType    String   @db.VarChar(100)
+  size        Int
+  path        String   @db.VarChar(255)
+  url         String   @db.VarChar(255)
+  category    String   @default("image") @db.VarChar(50)
+  uploadedBy  Int?
+  createdAt   DateTime @default(now())
+  
+  @@map("media")
+}
+
+model PpdbSetting {
+  id              Int      @id @default(autoincrement())
+  key             String   @unique @db.VarChar(100)
+  value           String?  @db.LongText
+  label           String?  @db.VarChar(150)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@map("ppdb_settings")
+}
+
+model PpdbRequirement {
+  id          Int      @id @default(autoincrement())
+  title       String   @db.VarChar(255)
+  description String?  @db.Text
+  isRequired  Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("ppdb_requirements")
+}
+
+model PpdbApplicant {
+  id              Int      @id @default(autoincrement())
+  registrationNo  String   @unique @db.VarChar(30)
+  fullName        String   @db.VarChar(150)
+  birthPlace      String?  @db.VarChar(100)
+  birthDate       DateTime?
+  gender          String   @db.VarChar(10)
+  address         String?  @db.Text
+  originSchool    String?  @db.VarChar(150)
+  parentName      String   @db.VarChar(150)
+  parentPhone     String   @db.VarChar(20)
+  parentEmail     String?  @db.VarChar(150)
+  programChoice   String?  @db.VarChar(100)
+  documentUrl     String?  @db.VarChar(255)
+  status          String   @default("pending") @db.VarChar(20)
+  notes           String?  @db.Text
+  verificationToken String? @db.VarChar(100)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@map("ppdb_applicants")
+}
+
+model ContactMessage {
+  id          Int      @id @default(autoincrement())
+  name        String   @db.VarChar(100)
+  email       String   @db.VarChar(150)
+  phone       String?  @db.VarChar(20)
+  subject     String?  @db.VarChar(255)
+  message     String   @db.Text
+  isRead      Boolean  @default(false)
+  replyNote   String?  @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("contact_messages")
+}
+
+model SocialMedia {
+  id          Int      @id @default(autoincrement())
+  platform    String   @db.VarChar(50)
+  url         String   @db.VarChar(255)
+  icon        String?  @db.VarChar(50)
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("social_media")
+}
+
+model ActivityLog {
+  id          Int      @id @default(autoincrement())
+  userId      Int?
+  user        User?    @relation(fields: [userId], references: [id])
+  action      String   @db.VarChar(100)
+  module      String?  @db.VarChar(50)
+  description String?  @db.Text
+  ipAddress   String?  @db.VarChar(50)
+  userAgent   String?  @db.VarChar(500)
+  createdAt   DateTime @default(now())
+  
+  @@map("activity_logs")
+}

@@ -1,0 +1,51 @@
+<%- include('../../partials/head') %>
+<%- include('../../partials/header') %>
+
+<main class="py-5">
+  <div class="container">
+    <nav aria-label="breadcrumb" class="mb-4">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Beranda</a></li>
+        <li class="breadcrumb-item"><a href="/academic">Akademik</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Ekstrakurikuler</li>
+      </ol>
+    </nav>
+
+    <div class="text-center mb-5">
+      <span class="section-tag">Bakat & Minat Siswa</span>
+      <h1 class="fw-bold mb-2">Kegiatan Ekstrakurikuler</h1>
+      <p class="text-secondary max-w-600 mx-auto">Membangun kepemimpinan, sportivitas, jiwa seni, dan kreativitas di luar jam kelas.</p>
+    </div>
+
+    <% if (extracurriculars && extracurriculars.length > 0) { %>
+      <div class="row g-4">
+        <% extracurriculars.forEach(function(ekskul) { %>
+          <div class="col-sm-6 col-md-4 col-lg-3">
+            <div class="card h-100 border rounded-3 shadow-sm overflow-hidden">
+              <img src="<%= ekskul.imageUrl || 'https://images.unsplash.com/photo-1526676037777-05a232554f77?q=80&w=500&auto=format&fit=crop' %>" class="card-img-top" alt="<%= ekskul.name %>" style="height: 170px; object-fit: cover;">
+              <div class="card-body d-flex flex-column">
+                <span class="badge bg-light text-primary align-self-start mb-2"><%= ekskul.category || 'Bakat & Minat' %></span>
+                <h5 class="card-title fw-bold fs-6 mb-2"><%= ekskul.name %></h5>
+                <p class="card-text text-muted small flex-grow-1"><%= truncate(ekskul.description, 80) %></p>
+                <div class="border-top pt-2 mt-2 text-muted small">
+                  <% if (ekskul.schedule) { %>
+                    <div><i data-lucide="clock" style="width: 12px; height: 12px; display: inline-block;"></i> <%= ekskul.schedule %></div>
+                  <% } %>
+                  <% if (ekskul.teacher) { %>
+                    <div><i data-lucide="user" style="width: 12px; height: 12px; display: inline-block;"></i> Pembina: <%= ekskul.teacher %></div>
+                  <% } %>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    <% } else { %>
+      <div class="alert alert-light border text-center py-5">
+        Informasi ekstrakurikuler sedang diperbarui.
+      </div>
+    <% } %>
+  </div>
+</main>
+
+<%- include('../../partials/footer') %>

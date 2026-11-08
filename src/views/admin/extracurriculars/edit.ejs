@@ -1,0 +1,82 @@
+<%- include('../partials/admin-head') %>
+<%- include('../partials/admin-sidebar') %>
+
+<div class="admin-main">
+  <%- include('../partials/admin-topbar') %>
+
+  <div class="admin-content">
+    <%- include('../partials/alert') %>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h3 class="fw-bold mb-1">Edit Ekstrakurikuler</h3>
+        <p class="text-muted small mb-0"><%= item.name %></p>
+      </div>
+      <a href="/admin/extracurriculars" class="btn btn-outline-secondary btn-sm">&larr; Kembali ke Daftar</a>
+    </div>
+
+    <form action="/admin/extracurriculars/<%= item.id %>/update" method="POST" enctype="multipart/form-data">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+      <div class="row g-4 justify-content-center">
+        <div class="col-lg-8">
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <h5>Informasi Ekstrakurikuler</h5>
+            </div>
+            <div class="admin-card-body">
+              <div class="mb-3">
+                <label class="form-label">Nama Ekstrakurikuler <span class="text-danger">*</span></label>
+                <input type="text" name="name" class="form-control" value="<%= item.name %>" required>
+              </div>
+
+              <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                  <label class="form-label">Kategori</label>
+                  <input type="text" name="category" class="form-control" value="<%= item.category %>">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Guru Pembina / Pelatih</label>
+                  <input type="text" name="teacher" class="form-control" value="<%= item.teacher || '' %>">
+                </div>
+              </div>
+
+              <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                  <label class="form-label">Jadwal Latihan</label>
+                  <input type="text" name="schedule" class="form-control" value="<%= item.schedule || '' %>">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Foto / Banner</label>
+                  <% if (item.imageUrl) { %>
+                    <div class="mb-2 rounded overflow-hidden" style="max-height: 120px;">
+                      <img src="<%= item.imageUrl %>" alt="" class="w-100 h-100" style="object-fit: cover;">
+                    </div>
+                  <% } %>
+                  <input type="file" name="image" class="form-control" accept="image/*">
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Deskripsi & Rencana Kegiatan</label>
+                <textarea name="description" rows="5" class="form-control"><%= item.description %></textarea>
+              </div>
+
+              <div class="form-check form-switch mb-4">
+                <input class="form-check-input" type="checkbox" name="isActive" value="true" id="activeSwitch" <%= item.isActive ? 'checked' : '' %>>
+                <label class="form-check-label fw-bold small" for="activeSwitch">Status Ekskul Aktif</label>
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100 d-inline-flex justify-content-center align-items-center gap-1">
+                <i data-lucide="save" style="width: 16px; height: 16px;"></i>
+                <span>Simpan Perubahan</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <%- include('../partials/admin-footer') %>
+</div>

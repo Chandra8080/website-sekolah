@@ -1,0 +1,89 @@
+<%- include('../partials/admin-head') %>
+<%- include('../partials/admin-sidebar') %>
+
+<div class="admin-main">
+  <%- include('../partials/admin-topbar') %>
+
+  <div class="admin-content">
+    <%- include('../partials/alert') %>
+
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+      <div>
+        <h3 class="fw-bold mb-1"><%= pageTitle %></h3>
+        <p class="text-muted small mb-0">Kelola akun staf, hak akses peranan, dan keamanan autentikasi.</p>
+      </div>
+      <a href="/admin/users/create" class="btn btn-primary btn-sm d-inline-flex align-items-center gap-1">
+        <i data-lucide="user-plus" style="width: 14px; height: 14px;"></i>
+        <span>Tambah Pengguna</span>
+      </a>
+    </div>
+
+    <div class="admin-card">
+      <div class="table-responsive">
+        <table class="table-custom">
+          <thead>
+            <tr>
+              <th>Pengguna</th>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Peran (Role)</th>
+              <th>Status</th>
+              <th>Login Terakhir</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (users && users.length > 0) { %>
+              <% users.forEach(function(u) { %>
+                <tr>
+                  <td>
+                    <div class="d-flex align-items-center gap-2">
+                      <div style="width: 36px; height: 36px; border-radius: 50%; background: #e2e8f0; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--admin-primary); overflow: hidden;">
+                        <% if (u.avatar) { %>
+                          <img src="<%= u.avatar %>" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+                        <% } else { %>
+                          <%= u.name.charAt(0) %>
+                        <% } %>
+                      </div>
+                      <span class="fw-bold text-dark"><%= u.name %></span>
+                    </div>
+                  </td>
+                  <td class="font-monospace small"><%= u.username %></td>
+                  <td class="small text-muted"><%= u.email %></td>
+                  <td>
+                    <span class="badge bg-light text-primary text-uppercase"><%= u.role ? u.role.name : 'Staf' %></span>
+                  </td>
+                  <td>
+                    <span class="status-badge <%= u.isActive ? 'active' : 'inactive' %>">
+                      <%= u.isActive ? 'Aktif' : 'Nonaktif' %>
+                    </span>
+                  </td>
+                  <td class="small text-muted"><%= formatDate(u.lastLoginAt) %></td>
+                  <td>
+                    <div class="d-flex gap-1">
+                      <a href="/admin/users/<%= u.id %>/edit" class="btn-action" title="Edit"><i data-lucide="edit-2" style="width: 14px; height: 14px;"></i></a>
+                      <% if (!currentUser || currentUser.id !== u.id) { %>
+                        <form action="/admin/users/<%= u.id %>/delete" method="POST" onsubmit="return confirm('Hapus akun pengguna ini?');" style="display: inline;">
+                          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                          <button type="submit" class="btn-action delete" title="Hapus"><i data-lucide="trash" style="width: 14px; height: 14px;"></i></button>
+                        </form>
+                      <% } %>
+                    </div>
+                  </td>
+                </tr>
+              <% }); %>
+            <% } else { %>
+              <tr>
+                <td colspan="7" class="text-center text-muted py-4">Belum ada akun pengguna.</td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+
+      <%- include('../partials/pagination') %>
+    </div>
+  </div>
+
+  <%- include('../partials/admin-footer') %>
+</div>

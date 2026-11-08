@@ -1,0 +1,488 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+
+<main>
+  <!-- 1. HERO SECTION -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-8">
+          <div class="hero-badge">
+            <i data-lucide="award" style="width: 14px; height: 14px;"></i>
+            <span>Terakreditasi A (Unggul)</span>
+          </div>
+          <h1 class="hero-title">
+            <%= (sectionMap.hero && sectionMap.hero.title) || 'Mewujudkan Generasi Pemimpin Berintegritas & Berprestasi Global' %>
+          </h1>
+          <p class="hero-subtitle">
+            <%= (sectionMap.hero && sectionMap.hero.subtitle) || settings.school_tagline || 'Mengembangkan potensi intelektual, spiritual, dan karakter peserta didik melalui kurikulum komprehensif berstandar nasional dan global.' %>
+          </p>
+          <div class="d-flex flex-wrap gap-3">
+            <a href="/ppdb" class="btn btn-secondary-custom d-inline-flex align-items-center gap-2">
+              <i data-lucide="user-plus" style="width: 18px; height: 18px;"></i>
+              <span>Daftar PPDB <%= settings.ppdb_year || '2025/2026' %></span>
+            </a>
+            <a href="/profile/about" class="btn btn-outline-white d-inline-flex align-items-center gap-2">
+              <i data-lucide="compass" style="width: 18px; height: 18px;"></i>
+              <span>Jelajahi Profil Kami</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. STATISTICS RIBBON -->
+  <div class="container">
+    <div class="stats-ribbon">
+      <div class="row g-4 justify-content-center">
+        <div class="col-6 col-md-3 stat-item">
+          <div class="stat-number count-up" data-target="<%= stats.students %>"><%= stats.students %></div>
+          <div class="stat-label">Siswa Aktif</div>
+        </div>
+        <div class="col-6 col-md-3 stat-item">
+          <div class="stat-number count-up" data-target="<%= stats.teachers %>"><%= stats.teachers %></div>
+          <div class="stat-label">Guru & Tenaga Ahli</div>
+        </div>
+        <div class="col-6 col-md-3 stat-item">
+          <div class="stat-number count-up" data-target="<%= stats.achievements %>"><%= stats.achievements %></div>
+          <div class="stat-label">Penghargaan & Prestasi</div>
+        </div>
+        <div class="col-6 col-md-3 stat-item">
+          <div class="stat-number count-up" data-target="<%= stats.alumni %>"><%= stats.alumni %></div>
+          <div class="stat-label">Alumni Berprestasi</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. SCHOOL INTRODUCTION -->
+  <section class="py-5 my-4">
+    <div class="container">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6">
+          <span class="section-tag">Sekilas Tentang Kami</span>
+          <h2 class="section-title text-start mb-3">
+            <%= (sectionMap.intro && sectionMap.intro.title) || 'Dedikasi Terbaik untuk Pendidikan Anak Bangsa' %>
+          </h2>
+          <p class="text-secondary mb-4 leading-relaxed">
+            <%= (sectionMap.intro && sectionMap.intro.content) || (settings.school_description || 'Berdiri dengan komitmen kokoh menghadirkan ekosistem belajar yang kondusif, dinamis, dan relevan dengan tantangan zaman. Kami mendampingi setiap siswa mengenali minat dan mengoptimalkan bakat unik mereka melalui perpaduan keunggulan akademik, riset teknologi, dan budi pekerti luhur.') %>
+          </p>
+          <div class="row g-3 mb-4">
+            <div class="col-sm-6">
+              <div class="d-flex align-items-center gap-3 p-3 bg-white border rounded">
+                <i data-lucide="check-circle-2" style="width: 24px; height: 24px; color: var(--color-success); flex-shrink: 0;"></i>
+                <div class="fw-bold small">Kurikulum Terintegrasi</div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="d-flex align-items-center gap-3 p-3 bg-white border rounded">
+                <i data-lucide="check-circle-2" style="width: 24px; height: 24px; color: var(--color-success); flex-shrink: 0;"></i>
+                <div class="fw-bold small">Laboratorium Sains Modern</div>
+              </div>
+            </div>
+          </div>
+          <a href="/profile/about" class="btn btn-primary-custom d-inline-flex align-items-center gap-2">
+            <span>Baca Selengkapnya</span>
+            <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+          </a>
+        </div>
+        <div class="col-lg-6">
+          <div class="position-relative">
+            <img src="<%= (sectionMap.intro && sectionMap.intro.imageUrl) || 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=800&auto=format&fit=crop' %>" alt="Gedung Sekolah" class="rounded-3 shadow-lg w-100" style="height: 380px; object-fit: cover;">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. PRINCIPAL'S GREETING -->
+  <% if (headmaster) { %>
+    <section class="py-5 bg-white border-top border-bottom">
+      <div class="container">
+        <div class="row align-items-center g-5">
+          <div class="col-lg-4 text-center">
+            <div class="mx-auto" style="max-width: 280px; border-radius: 16px; overflow: hidden; border: 4px solid var(--color-surface-alt); box-shadow: var(--shadow-md);">
+              <img src="<%= headmaster.photo || 'https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=500&auto=format&fit=crop' %>" alt="<%= headmaster.name %>" class="w-100" style="height: 320px; object-fit: cover;">
+            </div>
+            <h5 class="mt-3 mb-1 fw-bold text-dark"><%= headmaster.name %></h5>
+            <div class="text-muted small">Kepala Sekolah</div>
+          </div>
+          <div class="col-lg-8">
+            <span class="section-tag">Sambutan Pimpinan</span>
+            <h2 class="section-title text-start mb-3">Membangun Masa Depan Gemilang</h2>
+            <div class="text-secondary leading-relaxed mb-4">
+              <%- headmaster.greetingText || '<p>Selamat datang di portal resmi sekolah kami. Kami percaya bahwa pendidikan sejati bukan hanya sekadar transfer ilmu pengetahuan, melainkan proses menumbuhkan integritas, rasa ingin tahu, dan empati sosial pada setiap insan didik.</p>' %>
+            </div>
+            <a href="/profile/headmaster" class="btn btn-outline-dark d-inline-flex align-items-center gap-2 btn-sm">
+              <span>Baca Sambutan Lengkap</span>
+              <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  <% } %>
+
+  <!-- 5. SCHOOL EXCELLENCE FEATURES -->
+  <section class="py-5">
+    <div class="container py-4">
+      <div class="section-header">
+        <span class="section-tag">Keunggulan Lembaga</span>
+        <h2 class="section-title">Mengapa Memilih Kami?</h2>
+        <p class="section-subtitle">Komitmen kami dalam menghadirkan standar mutu terbaik dalam setiap aspek pembelajaran.</p>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-3">
+          <div class="p-4 bg-white border rounded-3 h-100 shadow-sm">
+            <div class="mb-3" style="width: 48px; height: 48px; background: var(--color-accent); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--color-primary);">
+              <i data-lucide="book-open" style="width: 24px; height: 24px;"></i>
+            </div>
+            <h5 class="fw-bold mb-2">Kurikulum Terakreditasi</h5>
+            <p class="text-muted small mb-0">Implementasi kurikulum mutakhir yang mengkombinasikan penguasaan konsep, analisis kritis, dan riset praktis.</p>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+          <div class="p-4 bg-white border rounded-3 h-100 shadow-sm">
+            <div class="mb-3" style="width: 48px; height: 48px; background: #fef3c7; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #b45309;">
+              <i data-lucide="users" style="width: 24px; height: 24px;"></i>
+            </div>
+            <h5 class="fw-bold mb-2">Pendidik Berpengalaman</h5>
+            <p class="text-muted small mb-0">Dididik oleh guru profesional lulusan perguruan tinggi unggulan dengan sertifikasi pendidik nasional.</p>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+          <div class="p-4 bg-white border rounded-3 h-100 shadow-sm">
+            <div class="mb-3" style="width: 48px; height: 48px; background: #e0f2fe; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #0369a1;">
+              <i data-lucide="cpu" style="width: 24px; height: 24px;"></i>
+            </div>
+            <h5 class="fw-bold mb-2">Digital Smart Campus</h5>
+            <p class="text-muted small mb-0">Lingkungan belajar berbasis teknologi dengan koneksi berkecepatan tinggi, e-learning, dan laboratorium canggih.</p>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+          <div class="p-4 bg-white border rounded-3 h-100 shadow-sm">
+            <div class="mb-3" style="width: 48px; height: 48px; background: #dcfce7; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #15803d;">
+              <i data-lucide="trophy" style="width: 24px; height: 24px;"></i>
+            </div>
+            <h5 class="fw-bold mb-2">Prestasi Berkelanjutan</h5>
+            <p class="text-muted small mb-0">Pembinaan intensif olimpiade sains, olahraga, seni budaya, serta kompetisi tingkat internasional.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. EDUCATION PROGRAMS -->
+  <% if (programs && programs.length > 0) { %>
+    <section class="py-5 bg-white border-top border-bottom">
+      <div class="container py-4">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4">
+          <div>
+            <span class="section-tag">Program Unggulan</span>
+            <h2 class="section-title text-start mb-0">Pilihan Program Pendidikan</h2>
+          </div>
+          <a href="/academic/programs" class="btn btn-outline-primary mt-3 mt-md-0 d-inline-flex align-items-center gap-2">
+            <span>Lihat Semua Program</span>
+            <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+          </a>
+        </div>
+
+        <div class="row g-4">
+          <% programs.forEach(function(prog) { %>
+            <div class="col-md-6 col-lg-3">
+              <div class="card h-100 border rounded-3 shadow-sm overflow-hidden">
+                <img src="<%= prog.imageUrl || 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=500&auto=format&fit=crop' %>" class="card-img-top" alt="<%= prog.name %>" style="height: 160px; object-fit: cover;">
+                <div class="card-body d-flex flex-direction-column flex-column">
+                  <div class="badge bg-light text-primary align-self-start mb-2"><%= prog.duration || '3 Tahun' %></div>
+                  <h5 class="card-title fw-bold mb-2"><%= prog.name %></h5>
+                  <p class="card-text text-muted small flex-grow-1"><%= truncate(prog.description, 95) %></p>
+                  <a href="/academic/programs" class="fw-bold small text-primary text-decoration-none mt-2">Pelajari Detail &rarr;</a>
+                </div>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+      </div>
+    </section>
+  <% } %>
+
+  <!-- 8. LATEST NEWS (EDITORIAL CARDS) -->
+  <section class="py-5">
+    <div class="container py-4">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4">
+        <div>
+          <span class="section-tag">Warta Sekolah</span>
+          <h2 class="section-title text-start mb-0">Berita & Artikel Terkini</h2>
+        </div>
+        <a href="/news" class="btn btn-outline-primary mt-3 mt-md-0 d-inline-flex align-items-center gap-2">
+          <span>Arsip Berita</span>
+          <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+        </a>
+      </div>
+
+      <% if (latestNews && latestNews.length > 0) { %>
+        <div class="row g-4">
+          <% latestNews.forEach(function(news) { %>
+            <div class="col-md-6 col-lg-4">
+              <article class="editorial-card">
+                <div class="editorial-img-wrap">
+                  <img src="<%= news.imageUrl || 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=600&auto=format&fit=crop' %>" alt="<%= news.title %>">
+                  <% if (news.category) { %>
+                    <span class="editorial-badge"><%= news.category.name %></span>
+                  <% } %>
+                </div>
+                <div class="editorial-body">
+                  <div class="editorial-meta">
+                    <span><i data-lucide="calendar" style="width: 14px; height: 14px; display: inline-block;"></i> <%= formatDate(news.publishedAt || news.createdAt) %></span>
+                    <span>&bull;</span>
+                    <span><i data-lucide="eye" style="width: 14px; height: 14px; display: inline-block;"></i> <%= news.viewCount %> tayang</span>
+                  </div>
+                  <h4 class="editorial-title">
+                    <a href="/news/<%= news.slug %>"><%= news.title %></a>
+                  </h4>
+                  <p class="editorial-excerpt"><%= truncate(news.excerpt || news.content, 110) %></p>
+                  <div class="editorial-footer">
+                    <span class="text-muted"><%= news.author || 'Admin' %></span>
+                    <a href="/news/<%= news.slug %>" class="text-primary d-inline-flex align-items-center gap-1">
+                      <span>Baca</span>
+                      <i data-lucide="chevron-right" style="width: 16px; height: 16px;"></i>
+                    </a>
+                  </div>
+                </div>
+              </article>
+            </div>
+          <% }); %>
+        </div>
+      <% } else { %>
+        <div class="alert alert-light border text-center py-4">Belum ada warta berita yang diterbitkan.</div>
+      <% } %>
+    </div>
+  </section>
+
+  <!-- 9 & 10. ANNOUNCEMENTS & UPCOMING EVENTS -->
+  <section class="py-5 bg-white border-top border-bottom">
+    <div class="container py-3">
+      <div class="row g-5">
+        <!-- Announcements Column -->
+        <div class="col-lg-6">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+              <span class="section-tag">Informasi Penting</span>
+              <h3 class="fw-bold mb-0">Pengumuman Resmi</h3>
+            </div>
+            <a href="/announcements" class="small fw-bold text-primary">Lihat Semua &rarr;</a>
+          </div>
+
+          <% if (announcements && announcements.length > 0) { %>
+            <div class="d-flex flex-column gap-3">
+              <% announcements.forEach(function(ann) { %>
+                <div class="p-3 border rounded-3 bg-light">
+                  <div class="d-flex justify-content-between align-items-start mb-2">
+                    <span class="badge <%= ann.priority === 'urgent' ? 'bg-danger' : (ann.priority === 'high' ? 'bg-warning text-dark' : 'bg-primary') %> text-uppercase small">
+                      <%= ann.priority %>
+                    </span>
+                    <small class="text-muted"><%= formatDate(ann.publishedAt || ann.createdAt) %></small>
+                  </div>
+                  <h6 class="fw-bold mb-1">
+                    <a href="/announcements/<%= ann.id %>" class="text-dark"><%= ann.title %></a>
+                  </h6>
+                  <p class="text-muted small mb-0"><%= truncate(ann.content, 95) %></p>
+                </div>
+              <% }); %>
+            </div>
+          <% } else { %>
+            <div class="alert alert-light border small text-muted">Tidak ada pengumuman baru.</div>
+          <% } %>
+        </div>
+
+        <!-- Upcoming Events Column -->
+        <div class="col-lg-6">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+              <span class="section-tag">Agenda Kegiatan</span>
+              <h3 class="fw-bold mb-0">Kegiatan Mendatang</h3>
+            </div>
+            <a href="/events" class="small fw-bold text-primary">Lihat Kalender &rarr;</a>
+          </div>
+
+          <% if (upcomingEvents && upcomingEvents.length > 0) { %>
+            <div class="d-flex flex-column gap-3">
+              <% upcomingEvents.forEach(function(event) { %>
+                <% const eventDate = new Date(event.startDate); %>
+                <div class="event-item-card">
+                  <div class="event-date-box">
+                    <div class="event-date-day"><%= eventDate.getDate() %></div>
+                    <div class="event-date-month"><%= eventDate.toLocaleString('id-ID', { month: 'short' }) %></div>
+                  </div>
+                  <div class="event-details">
+                    <h6 class="fw-bold mb-1">
+                      <a href="/events/<%= event.slug %>" class="text-dark"><%= event.title %></a>
+                    </h6>
+                    <div class="text-muted small d-flex align-items-center gap-3">
+                      <span><i data-lucide="clock" style="width: 14px; height: 14px; display: inline-block;"></i> <%= event.startTime || '08:00' %> WIB</span>
+                      <span><i data-lucide="map-pin" style="width: 14px; height: 14px; display: inline-block;"></i> <%= event.location || 'Kampus Sekolah' %></span>
+                    </div>
+                  </div>
+                </div>
+              <% }); %>
+            </div>
+          <% } else { %>
+            <div class="alert alert-light border small text-muted">Tidak ada agenda dalam waktu dekat.</div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. ACHIEVEMENTS PREVIEW -->
+  <% if (achievements && achievements.length > 0) { %>
+    <section class="py-5">
+      <div class="container py-3">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4">
+          <div>
+            <span class="section-tag">Prestasi Membanggakan</span>
+            <h2 class="section-title text-start mb-0">Prestasi Terkini Siswa</h2>
+          </div>
+          <a href="/achievements" class="btn btn-outline-primary mt-3 mt-md-0 d-inline-flex align-items-center gap-2">
+            <span>Galeri Prestasi</span>
+            <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+          </a>
+        </div>
+
+        <div class="row g-4">
+          <% achievements.forEach(function(ach) { %>
+            <div class="col-md-6 col-lg-3">
+              <div class="card h-100 border rounded-3 shadow-sm overflow-hidden">
+                <img src="<%= ach.imageUrl || 'https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?q=80&w=500&auto=format&fit=crop' %>" class="card-img-top" alt="<%= ach.title %>" style="height: 180px; object-fit: cover;">
+                <div class="card-body">
+                  <div class="d-flex gap-2 mb-2">
+                    <span class="badge bg-warning text-dark text-uppercase small"><%= ach.level %></span>
+                    <span class="badge bg-light text-secondary small"><%= ach.year || '2025' %></span>
+                  </div>
+                  <h6 class="card-title fw-bold mb-1"><%= ach.title %></h6>
+                  <p class="card-text text-muted small"><%= truncate(ach.description, 85) %></p>
+                </div>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+      </div>
+    </section>
+  <% } %>
+
+  <!-- 12. GALLERY PREVIEW -->
+  <% if (galleryItems && galleryItems.length > 0) { %>
+    <section class="py-5 bg-white border-top border-bottom">
+      <div class="container py-3">
+        <div class="section-header">
+          <span class="section-tag">Dokumentasi Sekolah</span>
+          <h2 class="section-title">Galeri Kegiatan</h2>
+          <p class="section-subtitle">Momen berharga aktivitas pembelajaran, inovasi, dan kebersamaan di kampus.</p>
+        </div>
+
+        <div class="gallery-grid mb-4">
+          <% galleryItems.forEach(function(g) { %>
+            <div class="gallery-grid-item" onclick="openLightbox('<%= g.imageUrl %>')">
+              <img src="<%= g.thumbnailUrl || g.imageUrl %>" alt="<%= g.title %>" loading="lazy">
+              <div class="gallery-overlay">
+                <h6 class="fw-bold mb-0 text-white"><%= g.title %></h6>
+                <% if (g.category) { %><small class="text-white-50"><%= g.category.name %></small><% } %>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+
+        <div class="text-center">
+          <a href="/gallery" class="btn btn-outline-primary d-inline-flex align-items-center gap-2">
+            <i data-lucide="images" style="width: 16px; height: 16px;"></i>
+            <span>Lihat Semua Foto Galeri</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  <% } %>
+
+  <!-- 13. PPDB CALL TO ACTION -->
+  <section class="py-5">
+    <div class="container">
+      <div class="ppdb-banner">
+        <div class="row align-items-center">
+          <div class="col-lg-8 mb-4 mb-lg-0">
+            <span class="badge bg-warning text-dark px-3 py-2 fw-bold text-uppercase mb-3">Penerimaan Siswa Baru</span>
+            <h2 class="text-white fw-bold mb-2">Mari Bergabung Menjadi Bagian dari Keluarga Besar Kami</h2>
+            <p class="text-white-50 mb-0">Daftarkan putra-putri Anda melalui portal PPDB Online yang mudah, transparan, dan terpercaya untuk Tahun Ajaran <%= settings.ppdb_year || '2025/2026' %>.</p>
+          </div>
+          <div class="col-lg-4 text-lg-end">
+            <a href="/ppdb" class="btn btn-secondary-custom btn-lg d-inline-flex align-items-center gap-2">
+              <i data-lucide="arrow-right-circle" style="width: 20px; height: 20px;"></i>
+              <span>Daftar Sekarang</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 14. CONTACT INFO + MAP EMBED -->
+  <section class="py-5 bg-white border-top">
+    <div class="container py-3">
+      <div class="row g-4 align-items-center">
+        <div class="col-lg-5">
+          <span class="section-tag">Lokasi & Kunjungan</span>
+          <h2 class="section-title text-start mb-3">Kunjungi Kampus Kami</h2>
+          <p class="text-muted mb-4">Kami menyambut hangat kunjungan calon siswa dan orang tua untuk melihat langsung fasilitas dan berkonsultasi mengenai program pendidikan kami.</p>
+          
+          <div class="d-flex flex-column gap-3 mb-4">
+            <div class="d-flex align-items-start gap-3">
+              <div class="p-2 bg-light rounded text-primary"><i data-lucide="map-pin" style="width: 20px; height: 20px;"></i></div>
+              <div>
+                <strong class="d-block text-dark">Alamat Kampus:</strong>
+                <span class="text-muted small"><%= settings.school_address || 'Jl. Pendidikan No. 45, Jakarta Selatan' %></span>
+              </div>
+            </div>
+            <div class="d-flex align-items-start gap-3">
+              <div class="p-2 bg-light rounded text-primary"><i data-lucide="phone" style="width: 20px; height: 20px;"></i></div>
+              <div>
+                <strong class="d-block text-dark">Layanan Telepon:</strong>
+                <span class="text-muted small"><%= settings.school_phone || '(021) 7890-1234' %></span>
+              </div>
+            </div>
+            <div class="d-flex align-items-start gap-3">
+              <div class="p-2 bg-light rounded text-primary"><i data-lucide="mail" style="width: 20px; height: 20px;"></i></div>
+              <div>
+                <strong class="d-block text-dark">Email Resmi:</strong>
+                <span class="text-muted small"><%= settings.school_email || 'info@sekolah.sch.id' %></span>
+              </div>
+            </div>
+          </div>
+
+          <a href="/contact" class="btn btn-outline-primary d-inline-flex align-items-center gap-2">
+            <span>Kirim Pesan Langsung</span>
+            <i data-lucide="send" style="width: 16px; height: 16px;"></i>
+          </a>
+        </div>
+
+        <div class="col-lg-7">
+          <div class="border rounded-3 overflow-hidden shadow-sm" style="height: 380px;">
+            <iframe 
+              src="<%= settings.school_maps_embed || 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.295484865187!2d106.801!3d-6.224!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNsKwMTMnMjYuNCJTIDEwNsKwNDgnMDMuNiJF!5e0!3m2!1sid!2sid!4v1600000000000!5m2!1sid!2sid' %>" 
+              width="100%" 
+              height="100%" 
+              style="border:0;" 
+              allowfullscreen="" 
+              loading="lazy" 
+              referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<%- include('../partials/footer') %>

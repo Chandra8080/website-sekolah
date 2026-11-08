@@ -1,0 +1,88 @@
+<%- include('../partials/admin-head') %>
+<%- include('../partials/admin-sidebar') %>
+
+<div class="admin-main">
+  <%- include('../partials/admin-topbar') %>
+
+  <div class="admin-content">
+    <%- include('../partials/alert') %>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h3 class="fw-bold mb-1"><%= pageTitle %></h3>
+        <p class="text-muted small mb-0">Sesuaikan palet warna primer dan sekunder website sekolah secara dinamis.</p>
+      </div>
+      <a href="/admin/settings" class="btn btn-outline-secondary btn-sm">&larr; Kembali ke Pengaturan</a>
+    </div>
+
+    <div class="row g-4 justify-content-center">
+      <div class="col-lg-8">
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h5>Palet Skema Warna Website</h5>
+          </div>
+          <div class="admin-card-body">
+            <form action="/admin/settings/colors" method="POST">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+              <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                  <label class="form-label">Warna Utama (Primary Color)</label>
+                  <div class="input-group">
+                    <input type="color" class="form-control form-control-color" name="primary_color" value="<%= colors.primary_color || '#1a3a6b' %>" title="Pilih warna">
+                    <input type="text" class="form-control" value="<%= colors.primary_color || '#1a3a6b' %>" readonly>
+                  </div>
+                  <div class="form-text">Digunakan untuk header, tombol primer, dan heading.</div>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Warna Utama Gelap (Primary Dark)</label>
+                  <div class="input-group">
+                    <input type="color" class="form-control form-control-color" name="color_primary_dark" value="<%= colors.color_primary_dark || '#0f2447' %>" title="Pilih warna">
+                    <input type="text" class="form-control" value="<%= colors.color_primary_dark || '#0f2447' %>" readonly>
+                  </div>
+                  <div class="form-text">Digunakan untuk hero banner, topbar, dan footer.</div>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Warna Aksen Emas (Secondary Color)</label>
+                  <div class="input-group">
+                    <input type="color" class="form-control form-control-color" name="secondary_color" value="<%= colors.secondary_color || '#c8a84b' %>" title="Pilih warna">
+                    <input type="text" class="form-control" value="<%= colors.secondary_color || '#c8a84b' %>" readonly>
+                  </div>
+                  <div class="form-text">Digunakan untuk tombol PPDB, garis aksen, dan lencana.</div>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Warna Latar Aksen (Accent Color)</label>
+                  <div class="input-group">
+                    <input type="color" class="form-control form-control-color" name="accent_color" value="<%= colors.accent_color || '#e8f0fe' %>" title="Pilih warna">
+                    <input type="text" class="form-control" value="<%= colors.accent_color || '#e8f0fe' %>" readonly>
+                  </div>
+                  <div class="form-text">Digunakan untuk latar belakang elemen aktif dan sorotan.</div>
+                </div>
+              </div>
+
+              <!-- Live Preview Demo Box -->
+              <div class="p-4 rounded-3 border mb-4" style="background-color: #f8f9fa;">
+                <h6 class="fw-bold mb-3">Pratinjau Komponen Visual:</h6>
+                <div class="d-flex flex-wrap gap-3 align-items-center">
+                  <button type="button" class="btn" style="background-color: <%= colors.primary_color || '#1a3a6b' %>; color: #fff; font-weight: 600;">Tombol Primer</button>
+                  <button type="button" class="btn" style="background-color: <%= colors.secondary_color || '#c8a84b' %>; color: #000; font-weight: 700;">Tombol Aksen</button>
+                  <span class="badge" style="background-color: <%= colors.accent_color || '#e8f0fe' %>; color: <%= colors.primary_color || '#1a3a6b' %>; font-size: 0.9rem; padding: 6px 12px;">Lencana Informasi</span>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100 d-inline-flex justify-content-center align-items-center gap-1">
+                <i data-lucide="check" style="width: 16px; height: 16px;"></i>
+                <span>Terapkan Skema Warna</span>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%- include('../partials/admin-footer') %>
+</div>

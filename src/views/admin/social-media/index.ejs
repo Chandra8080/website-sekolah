@@ -1,0 +1,111 @@
+<%- include('../partials/admin-head') %>
+<%- include('../partials/admin-sidebar') %>
+
+<div class="admin-main">
+  <%- include('../partials/admin-topbar') %>
+
+  <div class="admin-content">
+    <%- include('../partials/alert') %>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h3 class="fw-bold mb-1"><%= pageTitle %></h3>
+        <p class="text-muted small mb-0">Kelola tautan akun media sosial resmi sekolah di header dan footer.</p>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <!-- Create Social Media Form -->
+      <div class="col-lg-4">
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h5>Tambah Tautan Media Sosial</h5>
+          </div>
+          <div class="admin-card-body">
+            <form action="/admin/social-media" method="POST">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+              <div class="mb-3">
+                <label class="form-label">Nama Platform <span class="text-danger">*</span></label>
+                <input type="text" name="platform" class="form-control" placeholder="Contoh: Instagram / YouTube" required>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Tautan URL Lengkap <span class="text-danger">*</span></label>
+                <input type="url" name="url" class="form-control" placeholder="https://instagram.com/..." required>
+              </div>
+
+              <div class="row g-3 mb-3">
+                <div class="col-6">
+                  <label class="form-label">Ikon Lucide</label>
+                  <input type="text" name="icon" class="form-control" placeholder="instagram / youtube" value="globe">
+                </div>
+                <div class="col-6">
+                  <label class="form-label">Urutan</label>
+                  <input type="number" name="sortOrder" class="form-control" value="0">
+                </div>
+              </div>
+
+              <div class="form-check form-switch mb-4">
+                <input class="form-check-input" type="checkbox" name="isActive" value="true" id="activeSwitch" checked>
+                <label class="form-check-label fw-bold small" for="activeSwitch">Tampilkan di Publik</label>
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100">Tambah Media Sosial</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Social Media List -->
+      <div class="col-lg-8">
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h5>Daftar Akun Media Sosial</h5>
+          </div>
+          <div class="table-responsive">
+            <table class="table-custom">
+              <thead>
+                <tr>
+                  <th>Platform</th>
+                  <th>Tautan URL</th>
+                  <th>Ikon</th>
+                  <th>Status</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if (socialMedia && socialMedia.length > 0) { %>
+                  <% socialMedia.forEach(function(item) { %>
+                    <tr>
+                      <td class="fw-bold text-dark"><%= item.platform %></td>
+                      <td class="small"><a href="<%= item.url %>" target="_blank" class="text-primary text-truncate d-inline-block" style="max-width: 250px;"><%= item.url %></a></td>
+                      <td><span class="badge bg-light text-dark"><%= item.icon || 'globe' %></span></td>
+                      <td>
+                        <span class="status-badge <%= item.isActive ? 'active' : 'inactive' %>">
+                          <%= item.isActive ? 'Aktif' : 'Nonaktif' %>
+                        </span>
+                      </td>
+                      <td>
+                        <form action="/admin/social-media/<%= item.id %>/delete" method="POST" onsubmit="return confirm('Hapus tautan ini?');" style="display: inline;">
+                          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                          <button type="submit" class="btn-action delete" title="Hapus"><i data-lucide="trash" style="width: 14px; height: 14px;"></i></button>
+                        </form>
+                      </td>
+                    </tr>
+                  <% }); %>
+                <% } else { %>
+                  <tr>
+                    <td colspan="5" class="text-center text-muted py-4">Belum ada media sosial yang ditambahkan.</td>
+                  </tr>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%- include('../partials/admin-footer') %>
+</div>

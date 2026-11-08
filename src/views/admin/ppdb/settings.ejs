@@ -1,0 +1,127 @@
+<%- include('../partials/admin-head') %>
+<%- include('../partials/admin-sidebar') %>
+
+<div class="admin-main">
+  <%- include('../partials/admin-topbar') %>
+
+  <div class="admin-content">
+    <%- include('../partials/alert') %>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h3 class="fw-bold mb-1"><%= pageTitle %></h3>
+        <p class="text-muted small mb-0">Konfigurasi jadwal pembukaan gelombang, kuota, dan daftar persyaratan PPDB.</p>
+      </div>
+      <a href="/admin/ppdb" class="btn btn-outline-secondary btn-sm">&larr; Kembali ke Pendaftar</a>
+    </div>
+
+    <div class="row g-4">
+      <!-- Pengaturan Jadwal & Kuota -->
+      <div class="col-lg-6">
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h5>Jadwal & Kuota Daya Tampung</h5>
+          </div>
+          <div class="admin-card-body">
+            <form action="/admin/ppdb/settings" method="POST">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+              <div class="mb-3">
+                <label class="form-label">Status Penerimaan</label>
+                <select name="ppdb_status" class="form-select">
+                  <option value="open" <%= settings.ppdb_status === 'open' ? 'selected' : '' %>>Pendaftaran DIBUKA</option>
+                  <option value="closed" <%= settings.ppdb_status === 'closed' ? 'selected' : '' %>>Pendaftaran DITUTUP</option>
+                </select>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Tahun Ajaran</label>
+                <input type="text" name="ppdb_year" class="form-control" value="<%= settings.ppdb_year || '2025/2026' %>">
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Total Kuota / Daya Tampung</label>
+                <input type="text" name="ppdb_quota" class="form-control" value="<%= settings.ppdb_quota || '320 Siswa' %>">
+              </div>
+
+              <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                  <label class="form-label">Tanggal Mulai Buka</label>
+                  <input type="text" name="ppdb_start_date" class="form-control" value="<%= settings.ppdb_start_date || '01 Mei 2025' %>">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Tanggal Penutupan</label>
+                  <input type="text" name="ppdb_end_date" class="form-control" value="<%= settings.ppdb_end_date || '30 Juni 2025' %>">
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Tanggal Pengumuman Hasil</label>
+                <input type="text" name="ppdb_announcement_date" class="form-control" value="<%= settings.ppdb_announcement_date || '05 Juli 2025' %>">
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100">Simpan Konfigurasi</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Persyaratan Pendaftaran -->
+      <div class="col-lg-6">
+        <div class="admin-card mb-4">
+          <div class="admin-card-header">
+            <h5>Tambah Syarat Pendaftaran</h5>
+          </div>
+          <div class="admin-card-body">
+            <form action="/admin/ppdb/requirements" method="POST">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+              <div class="mb-3">
+                <label class="form-label">Judul Persyaratan <span class="text-danger">*</span></label>
+                <input type="text" name="title" class="form-control" placeholder="Contoh: Salinan Kartu Keluarga (KK)" required>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Keterangan / Rincian</label>
+                <input type="text" name="description" class="form-control" placeholder="Dilegalisir oleh pihak kelurahan">
+              </div>
+
+              <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" name="isRequired" value="true" id="reqCheck" checked>
+                <label class="form-check-label small" for="reqCheck">Wajib Dilampirkan (Mandatory)</label>
+              </div>
+
+              <button type="submit" class="btn btn-outline-primary w-100">Tambah Syarat</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h5>Daftar Persyaratan Aktif</h5>
+          </div>
+          <ul class="list-group list-group-flush">
+            <% if (requirements && requirements.length > 0) { %>
+              <% requirements.forEach(function(r) { %>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <div>
+                    <strong class="d-block small"><%= r.title %></strong>
+                    <span class="text-muted" style="font-size: 0.75rem;"><%= r.description || '-' %></span>
+                  </div>
+                  <form action="/admin/ppdb/requirements/<%= r.id %>/delete" method="POST" onsubmit="return confirm('Hapus syarat ini?');">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <button type="submit" class="btn-action delete"><i data-lucide="trash" style="width: 14px; height: 14px;"></i></button>
+                  </form>
+                </li>
+              <% }); %>
+            <% } else { %>
+              <li class="list-group-item text-center text-muted py-3 small">Belum ada persyaratan.</li>
+            <% } %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%- include('../partials/admin-footer') %>
+</div>

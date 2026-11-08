@@ -1,0 +1,45 @@
+<%- include('../../partials/head') %>
+<%- include('../../partials/header') %>
+
+<main class="py-5">
+  <div class="container">
+    <nav aria-label="breadcrumb" class="mb-4">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Beranda</a></li>
+        <li class="breadcrumb-item">Profil</li>
+        <li class="breadcrumb-item active" aria-current="page">Sejarah Singkat</li>
+      </ol>
+    </nav>
+
+    <div class="row g-5">
+      <div class="col-lg-8">
+        <h1 class="fw-bold mb-3"><%= (section && section.title) || 'Sejarah Perjalanan Sekolah' %></h1>
+        <p class="lead text-secondary mb-4"><%= (section && section.subtitle) || 'Jejak langkah, evolusi, dan dedikasi dalam membangun peradaban pendidikan unggul.' %></p>
+
+        <div class="content-body text-secondary lh-lg mb-5">
+          <% if (section && section.content) { %>
+            <%- section.content %>
+          <% } else { %>
+            <p>Didirikan dengan tekad mulia untuk mencerdaskan kehidupan bangsa, sekolah ini mengawali perjalanannya dengan sarana yang sederhana namun didorong oleh semangat keilmuan yang luar biasa dari para pendirinya.</p>
+            <p>Seiring berjalannya waktu, institusi terus bertumbuh memperluas fasilitas laboratorium, sarana olahraga, kemitraan global, dan akreditasi peringkat A yang konsisten kami raih.</p>
+          <% } %>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="card border rounded-3 p-4 shadow-sm mb-4">
+          <h5 class="fw-bold mb-3">Profil Lembaga</h5>
+          <div class="list-group list-group-flush">
+            <a href="/profile/about" class="list-group-item list-group-item-action">Tentang Sekolah</a>
+            <a href="/profile/history" class="list-group-item list-group-item-action active fw-bold">Sejarah Singkat</a>
+            <a href="/profile/visi-misi" class="list-group-item list-group-item-action">Visi & Misi</a>
+            <a href="/profile/structure" class="list-group-item list-group-item-action">Struktur Organisasi</a>
+            <a href="/profile/headmaster" class="list-group-item list-group-item-action">Sambutan Kepala Sekolah</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<%- include('../../partials/footer') %>

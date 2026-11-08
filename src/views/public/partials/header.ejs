@@ -1,0 +1,138 @@
+<!-- Top Info Bar -->
+<div class="topbar d-none d-lg-block">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center">
+      <div class="d-flex align-items-center gap-4">
+        <span><i data-lucide="map-pin" style="width: 14px; height: 14px; display: inline-block; vertical-align: -2px; margin-right: 4px;"></i> <%= settings.school_address || 'Jakarta, Indonesia' %></span>
+        <span><i data-lucide="phone" style="width: 14px; height: 14px; display: inline-block; vertical-align: -2px; margin-right: 4px;"></i> <%= settings.school_phone || '(021) 7890-1234' %></span>
+      </div>
+      <div class="d-flex align-items-center gap-3">
+        <span><i data-lucide="clock" style="width: 14px; height: 14px; display: inline-block; vertical-align: -2px; margin-right: 4px;"></i> <%= settings.school_hours || '07:00 - 16:00 WIB' %></span>
+        <% if (currentUser) { %>
+          <a href="/admin" class="fw-bold text-warning" style="text-decoration: underline;">
+            <i data-lucide="layout-dashboard" style="width: 14px; height: 14px; display: inline-block; vertical-align: -2px;"></i> Panel Admin (<%= currentUser.name %>)
+          </a>
+        <% } else { %>
+          <a href="/admin/login" class="text-white-50"><i data-lucide="lock" style="width: 13px; height: 13px; display: inline-block; vertical-align: -2px;"></i> Masuk Staf</a>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main Navigation Header -->
+<header class="site-header">
+  <div class="container">
+    <nav class="navbar navbar-expand-lg py-3">
+      <a class="navbar-brand" href="/">
+        <div style="width: 44px; height: 44px; border-radius: 8px; background: var(--color-primary); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 1.4rem;">
+          <% if (settings.school_logo && settings.school_logo !== '/images/logo.png') { %>
+            <img src="<%= settings.school_logo %>" alt="Logo" style="width: 100%; height: 100%; object-fit: contain;">
+          <% } else { %>
+            <span>N</span>
+          <% } %>
+        </div>
+        <div>
+          <div><%= settings.school_name || 'SMA NEGERI NUSANTARA' %></div>
+          <span class="school-tagline"><%= settings.school_tagline || 'Unggul Berkarakter & Berprestasi Global' %></span>
+        </div>
+      </a>
+
+      <!-- Mobile Hamburger Toggle -->
+      <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+        <i data-lucide="menu" style="width: 28px; height: 28px; color: var(--color-primary);"></i>
+      </button>
+
+      <!-- Navigation Links -->
+      <div class="collapse navbar-collapse" id="mainNavbar">
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+          <li class="nav-item">
+            <a class="nav-link <%= currentPath === '/' ? 'active' : '' %>" href="/">Beranda</a>
+          </li>
+
+          <!-- Profil Dropdown -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle <%= currentPath.startsWith('/profile') ? 'active' : '' %>" href="#" id="navbarProfile" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Profil
+            </a>
+            <ul class="dropdown-menu shadow" aria-labelledby="navbarProfile">
+              <li><a class="dropdown-item" href="/profile/about">Tentang Sekolah</a></li>
+              <li><a class="dropdown-item" href="/profile/history">Sejarah Singkat</a></li>
+              <li><a class="dropdown-item" href="/profile/visi-misi">Visi & Misi</a></li>
+              <li><a class="dropdown-item" href="/profile/structure">Struktur Organisasi</a></li>
+              <li><a class="dropdown-item" href="/profile/headmaster">Sambutan Kepala Sekolah</a></li>
+            </ul>
+          </li>
+
+          <!-- Akademik Dropdown -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle <%= currentPath.startsWith('/academic') ? 'active' : '' %>" href="#" id="navbarAcademic" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Akademik
+            </a>
+            <ul class="dropdown-menu shadow" aria-labelledby="navbarAcademic">
+              <li><a class="dropdown-item" href="/academic">Informasi Akademik</a></li>
+              <li><a class="dropdown-item" href="/academic/programs">Program Peminatan</a></li>
+              <li><a class="dropdown-item" href="/academic/curriculum">Kurikulum</a></li>
+              <li><a class="dropdown-item" href="/academic/extracurriculars">Ekstrakurikuler</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="/facilities">Sarana & Prasarana</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link <%= currentPath === '/teachers' ? 'active' : '' %>" href="/teachers">Guru & Staf</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link <%= currentPath.startsWith('/news') ? 'active' : '' %>" href="/news">Berita</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link <%= currentPath === '/events' ? 'active' : '' %>" href="/events">Agenda</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link <%= currentPath === '/achievements' ? 'active' : '' %>" href="/achievements">Prestasi</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link <%= currentPath === '/gallery' ? 'active' : '' %>" href="/gallery">Galeri</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link <%= currentPath === '/contact' ? 'active' : '' %>" href="/contact">Kontak</a>
+          </li>
+
+          <!-- PPDB Action Button -->
+          <li class="nav-item ms-lg-2 mt-3 mt-lg-0">
+            <a class="btn btn-secondary-custom d-inline-flex align-items-center gap-2" href="/ppdb">
+              <i data-lucide="user-plus" style="width: 16px; height: 16px;"></i>
+              <span>PPDB Online</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<!-- Global Alert Flash Notifications -->
+<% if (typeof success !== 'undefined' && success.length > 0) { %>
+  <div class="container mt-3">
+    <div class="alert alert-success alert-dismissible fade show d-flex align-items-center gap-2 shadow-sm" role="alert">
+      <i data-lucide="check-circle" style="width: 20px; height: 20px; flex-shrink: 0;"></i>
+      <div><%= success %></div>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  </div>
+<% } %>
+
+<% if (typeof error !== 'undefined' && error.length > 0) { %>
+  <div class="container mt-3">
+    <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center gap-2 shadow-sm" role="alert">
+      <i data-lucide="alert-triangle" style="width: 20px; height: 20px; flex-shrink: 0;"></i>
+      <div><%= error %></div>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  </div>
+<% } %>

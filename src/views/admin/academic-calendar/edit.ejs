@@ -1,0 +1,82 @@
+<%- include('../partials/admin-head') %>
+<%- include('../partials/admin-sidebar') %>
+
+<div class="admin-main">
+  <%- include('../partials/admin-topbar') %>
+
+  <div class="admin-content">
+    <%- include('../partials/alert') %>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h3 class="fw-bold mb-1">Edit Agenda Kalender</h3>
+        <p class="text-muted small mb-0"><%= item.title %></p>
+      </div>
+      <a href="/admin/academic-calendar" class="btn btn-outline-secondary btn-sm">&larr; Kembali ke Daftar</a>
+    </div>
+
+    <form action="/admin/academic-calendar/<%= item.id %>/update" method="POST">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+      <div class="row g-4 justify-content-center">
+        <div class="col-lg-8">
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <h5>Informasi Agenda</h5>
+            </div>
+            <div class="admin-card-body">
+              <div class="mb-3">
+                <label class="form-label">Judul Agenda Akademik <span class="text-danger">*</span></label>
+                <input type="text" name="title" class="form-control" value="<%= item.title %>" required>
+              </div>
+
+              <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                  <label class="form-label">Tanggal Mulai <span class="text-danger">*</span></label>
+                  <input type="date" name="startDate" class="form-control" value="<%= item.startDate ? new Date(item.startDate).toISOString().slice(0, 10) : '' %>" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Tanggal Selesai (Opsional)</label>
+                  <input type="date" name="endDate" class="form-control" value="<%= item.endDate ? new Date(item.endDate).toISOString().slice(0, 10) : '' %>">
+                </div>
+              </div>
+
+              <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                  <label class="form-label">Kategori Agenda</label>
+                  <select name="type" class="form-select">
+                    <option value="ujian" <%= item.type === 'ujian' ? 'selected' : '' %>>Ujian / Asesmen</option>
+                    <option value="libur" <%= item.type === 'libur' ? 'selected' : '' %>>Libur Sekolah / Nasional</option>
+                    <option value="kegiatan" <%= item.type === 'kegiatan' ? 'selected' : '' %>>Kegiatan Sekolah</option>
+                    <option value="administrasi" <%= item.type === 'administrasi' ? 'selected' : '' %>>Administrasi & Rapor</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Warna Penanda</label>
+                  <input type="color" name="color" class="form-control form-control-color w-100" value="<%= item.color || '#1a3a6b' %>">
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Keterangan Tambahan</label>
+                <textarea name="description" rows="4" class="form-control"><%= item.description || '' %></textarea>
+              </div>
+
+              <div class="form-check form-switch mb-4">
+                <input class="form-check-input" type="checkbox" name="isPublished" value="true" id="publishSwitch" <%= item.isPublished ? 'checked' : '' %>>
+                <label class="form-check-label fw-bold small" for="publishSwitch">Tampilkan di Kalender Publik</label>
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100 d-inline-flex justify-content-center align-items-center gap-1">
+                <i data-lucide="save" style="width: 16px; height: 16px;"></i>
+                <span>Simpan Perubahan</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <%- include('../partials/admin-footer') %>
+</div>

@@ -1,0 +1,74 @@
+<%- include('../partials/admin-head') %>
+<%- include('../partials/admin-sidebar') %>
+
+<div class="admin-main">
+  <%- include('../partials/admin-topbar') %>
+
+  <div class="admin-content">
+    <%- include('../partials/alert') %>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h3 class="fw-bold mb-1"><%= pageTitle %></h3>
+        <p class="text-muted small mb-0">Kelola jadwal asesmen, libur sekolah, dan kalender pendidikan.</p>
+      </div>
+      <a href="/admin/academic-calendar/create" class="btn btn-primary btn-sm d-inline-flex align-items-center gap-1">
+        <i data-lucide="plus" style="width: 14px; height: 14px;"></i>
+        <span>Tambah Agenda Kalender</span>
+      </a>
+    </div>
+
+    <div class="admin-card">
+      <div class="table-responsive">
+        <table class="table-custom">
+          <thead>
+            <tr>
+              <th>Agenda Akademik</th>
+              <th>Mulai</th>
+              <th>Selesai</th>
+              <th>Kategori</th>
+              <th>Status</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (events && events.length > 0) { %>
+              <% events.forEach(function(e) { %>
+                <tr>
+                  <td>
+                    <div class="fw-bold text-dark"><%= e.title %></div>
+                    <small class="text-muted"><%= e.description || '-' %></small>
+                  </td>
+                  <td class="small fw-semibold text-primary"><%= formatDate(e.startDate) %></td>
+                  <td class="small text-muted"><%= e.endDate ? formatDate(e.endDate) : '-' %></td>
+                  <td><span class="badge bg-light text-dark"><%= e.type %></span></td>
+                  <td>
+                    <span class="status-badge <%= e.isPublished ? 'published' : 'draft' %>">
+                      <%= e.isPublished ? 'Terbit' : 'Draf' %>
+                    </span>
+                  </td>
+                  <td>
+                    <div class="d-flex gap-1">
+                      <a href="/admin/academic-calendar/<%= e.id %>/edit" class="btn-action" title="Edit"><i data-lucide="edit-2" style="width: 14px; height: 14px;"></i></a>
+                      <form action="/admin/academic-calendar/<%= e.id %>/delete" method="POST" onsubmit="return confirm('Hapus agenda kalender ini?');" style="display: inline;">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <button type="submit" class="btn-action delete" title="Hapus"><i data-lucide="trash" style="width: 14px; height: 14px;"></i></button>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+              <% }); %>
+            <% } else { %>
+              <tr>
+                <td colspan="6" class="text-center text-muted py-4">Belum ada agenda kalender akademik.</td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+      <%- include('../partials/pagination') %>
+    </div>
+  </div>
+
+  <%- include('../partials/admin-footer') %>
+</div>

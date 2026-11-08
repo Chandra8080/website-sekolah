@@ -1,0 +1,113 @@
+<%- include('../partials/admin-head') %>
+<%- include('../partials/admin-sidebar') %>
+
+<div class="admin-main">
+  <%- include('../partials/admin-topbar') %>
+
+  <div class="admin-content">
+    <%- include('../partials/alert') %>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h3 class="fw-bold mb-1">Edit Data Guru</h3>
+        <p class="text-muted small mb-0"><%= item.name %></p>
+      </div>
+      <a href="/admin/teachers" class="btn btn-outline-secondary btn-sm">&larr; Kembali ke Daftar</a>
+    </div>
+
+    <form action="/admin/teachers/<%= item.id %>/update" method="POST" enctype="multipart/form-data">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+      <div class="row g-4">
+        <div class="col-lg-8">
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <h5>Informasi Guru</h5>
+            </div>
+            <div class="admin-card-body">
+              <div class="row g-3 mb-3">
+                <div class="col-md-7">
+                  <label class="form-label">Nama Lengkap & Gelar <span class="text-danger">*</span></label>
+                  <input type="text" name="name" class="form-control" value="<%= item.name %>" required>
+                </div>
+                <div class="col-md-5">
+                  <label class="form-label">NIP</label>
+                  <input type="text" name="nip" class="form-control" value="<%= item.nip || '' %>">
+                </div>
+              </div>
+
+              <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                  <label class="form-label">Jabatan</label>
+                  <input type="text" name="position" class="form-control" value="<%= item.position %>">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Mata Pelajaran yang Diampu</label>
+                  <input type="text" name="subject" class="form-control" value="<%= item.subject || '' %>">
+                </div>
+              </div>
+
+              <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                  <label class="form-label">Pendidikan Terakhir</label>
+                  <input type="text" name="education" class="form-control" value="<%= item.education || '' %>">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Alamat Email</label>
+                  <input type="email" name="email" class="form-control" value="<%= item.email || '' %>">
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Biografi Singkat</label>
+                <textarea name="bio" rows="4" class="form-control"><%= item.bio || '' %></textarea>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Teks Sambutan (Jika Kepala Sekolah)</label>
+                <textarea name="greetingText" rows="6" class="form-control"><%= item.greetingText || '' %></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <h5>Foto & Status</h5>
+            </div>
+            <div class="admin-card-body">
+              <div class="mb-3">
+                <label class="form-label">Foto Saat Ini</label>
+                <% if (item.photo) { %>
+                  <div class="mb-2 text-center">
+                    <img src="<%= item.photo %>" alt="" class="rounded-circle shadow-sm" style="width: 100px; height: 100px; object-fit: cover;">
+                  </div>
+                <% } %>
+                <input type="file" name="photo" class="form-control" accept="image/*">
+                <div class="form-text">Biarkan kosong jika tidak mengubah foto.</div>
+              </div>
+
+              <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" name="isHeadmaster" value="true" id="headmasterSwitch" <%= item.isHeadmaster ? 'checked' : '' %>>
+                <label class="form-check-label fw-bold small" for="headmasterSwitch">Tandai Sebagai Kepala Sekolah</label>
+              </div>
+
+              <div class="form-check form-switch mb-4">
+                <input class="form-check-input" type="checkbox" name="isActive" value="true" id="activeSwitch" <%= item.isActive ? 'checked' : '' %>>
+                <label class="form-check-label fw-bold small" for="activeSwitch">Status Guru Aktif</label>
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100 d-inline-flex justify-content-center align-items-center gap-1">
+                <i data-lucide="save" style="width: 16px; height: 16px;"></i>
+                <span>Simpan Perubahan</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <%- include('../partials/admin-footer') %>
+</div>

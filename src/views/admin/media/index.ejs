@@ -1,0 +1,84 @@
+<%- include('../partials/admin-head') %>
+<%- include('../partials/admin-sidebar') %>
+
+<div class="admin-main">
+  <%- include('../partials/admin-topbar') %>
+
+  <div class="admin-content">
+    <%- include('../partials/alert') %>
+
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+      <div>
+        <h3 class="fw-bold mb-1"><%= pageTitle %></h3>
+        <p class="text-muted small mb-0">Pustaka berkas gambar dan dokumen media digital.</p>
+      </div>
+    </div>
+
+    <!-- Upload Card -->
+    <div class="admin-card mb-4">
+      <div class="admin-card-header">
+        <h5>Unggah Berkas Baru</h5>
+      </div>
+      <div class="admin-card-body">
+        <form action="/admin/media/upload" method="POST" enctype="multipart/form-data" class="d-flex flex-column flex-sm-row gap-2">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <input type="file" name="files" class="form-control" multiple required accept="image/*,.pdf,.doc,.docx,.xls,.xlsx">
+          <button type="submit" class="btn btn-primary d-inline-flex align-items-center gap-1 flex-shrink-0">
+            <i data-lucide="upload" style="width: 14px; height: 14px;"></i>
+            <span>Unggah Berkas</span>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Media Library Grid -->
+    <div class="admin-card">
+      <div class="admin-card-header">
+        <h5>Pustaka Berkas</h5>
+        <div class="d-flex gap-2">
+          <a href="/admin/media" class="btn btn-sm <%= !category ? 'btn-primary' : 'btn-outline-secondary' %>">Semua</a>
+          <a href="/admin/media?category=image" class="btn btn-sm <%= category === 'image' ? 'btn-primary' : 'btn-outline-secondary' %>">Gambar</a>
+          <a href="/admin/media?category=document" class="btn btn-sm <%= category === 'document' ? 'btn-primary' : 'btn-outline-secondary' %>">Dokumen</a>
+        </div>
+      </div>
+      <div class="admin-card-body">
+        <% if (mediaList && mediaList.length > 0) { %>
+          <div class="row g-3">
+            <% mediaList.forEach(function(m) { %>
+              <div class="col-6 col-sm-4 col-md-3 col-xl-2">
+                <div class="card h-100 border rounded shadow-sm overflow-hidden text-center p-2">
+                  <% if (m.category === 'image') { %>
+                    <div style="height: 110px; overflow: hidden; border-radius: 4px; background: #f1f5f9; display: flex; align-items: center; justify-content: center;">
+                      <img src="<%= m.url %>" alt="" style="max-height: 100%; max-width: 100%; object-fit: contain;">
+                    </div>
+                  <% } else { %>
+                    <div style="height: 110px; border-radius: 4px; background: #f8fafc; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--admin-primary);">
+                      <i data-lucide="file-text" style="width: 36px; height: 36px;"></i>
+                      <span class="small text-uppercase fw-bold mt-1" style="font-size: 0.65rem;"><%= m.mimeType.split('/')[1] || 'DOC' %></span>
+                    </div>
+                  <% } %>
+                  <div class="mt-2 text-truncate small fw-semibold" title="<%= m.originalName %>"><%= m.originalName %></div>
+                  <div class="d-flex justify-content-between align-items-center mt-2 pt-2 border-top">
+                    <button class="btn btn-sm btn-outline-secondary py-0 px-2" style="font-size: 0.72rem;" onclick="navigator.clipboard.writeText('<%= m.url %>'); alert('Tautan berkas disalin!');">Salin URL</button>
+                    <form action="/admin/media/<%= m.id %>/delete" method="POST" onsubmit="return confirm('Hapus permanen berkas ini?');" style="display: inline;">
+                      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                      <button type="submit" class="btn-action delete" title="Hapus"><i data-lucide="trash" style="width: 12px; height: 12px;"></i></button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            <% }); %>
+          </div>
+        <% } else { %>
+          <div class="text-center text-muted py-5">
+            Pustaka media masih kosong.
+          </div>
+        <% } %>
+      </div>
+
+      <%- include('../partials/pagination') %>
+    </div>
+  </div>
+
+  <%- include('../partials/admin-footer') %>
+</div>

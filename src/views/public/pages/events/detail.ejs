@@ -1,0 +1,88 @@
+<%- include('../../partials/head') %>
+<%- include('../../partials/header') %>
+
+<main class="py-5">
+  <div class="container">
+    <nav aria-label="breadcrumb" class="mb-4">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Beranda</a></li>
+        <li class="breadcrumb-item"><a href="/events">Agenda</a></li>
+        <li class="breadcrumb-item active text-truncate" style="max-width: 300px;" aria-current="page"><%= event.title %></li>
+      </ol>
+    </nav>
+
+    <div class="row g-5">
+      <div class="col-lg-8">
+        <div class="card border rounded-3 p-4 p-md-5 shadow-sm">
+          <div class="badge bg-primary text-uppercase align-self-start mb-3"><%= event.status %></div>
+          <h1 class="fw-bold mb-3"><%= event.title %></h1>
+
+          <div class="row g-3 p-3 bg-light rounded-3 mb-4">
+            <div class="col-sm-6">
+              <div class="d-flex align-items-center gap-2">
+                <i data-lucide="calendar" style="width: 20px; height: 20px; color: var(--color-primary);"></i>
+                <div>
+                  <small class="text-muted d-block">Tanggal Pelaksanaan</small>
+                  <strong><%= formatDate(event.startDate) %><% if (event.endDate) { %> - <%= formatDate(event.endDate) %><% } %></strong>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="d-flex align-items-center gap-2">
+                <i data-lucide="clock" style="width: 20px; height: 20px; color: var(--color-primary);"></i>
+                <div>
+                  <small class="text-muted d-block">Waktu Acara</small>
+                  <strong><%= event.startTime || '08:00' %> - <%= event.endTime || 'Selesai' %> WIB</strong>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 border-top pt-2 mt-2">
+              <div class="d-flex align-items-center gap-2">
+                <i data-lucide="map-pin" style="width: 20px; height: 20px; color: var(--color-primary);"></i>
+                <div>
+                  <small class="text-muted d-block">Lokasi Tempat</small>
+                  <strong><%= event.location || 'Kampus Sekolah' %></strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <% if (event.imageUrl) { %>
+            <div class="mb-4 rounded-3 overflow-hidden" style="max-height: 400px;">
+              <img src="<%= event.imageUrl %>" alt="<%= event.title %>" class="w-100 h-100" style="object-fit: cover;">
+            </div>
+          <% } %>
+
+          <h4 class="fw-bold mb-2">Deskripsi Agenda</h4>
+          <div class="content-body text-secondary lh-lg fs-5">
+            <%- event.description %>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <% if (otherEvents && otherEvents.length > 0) { %>
+          <div class="card border rounded-3 p-4 shadow-sm mb-4">
+            <h5 class="fw-bold mb-3">Agenda Lainnya</h5>
+            <div class="list-group list-group-flush">
+              <% otherEvents.forEach(function(o) { %>
+                <a href="/events/<%= o.slug %>" class="list-group-item list-group-item-action px-0">
+                  <div class="small fw-bold text-dark mb-1"><%= o.title %></div>
+                  <div class="text-muted small"><%= formatDate(o.startDate) %></div>
+                </a>
+              <% }); %>
+            </div>
+          </div>
+        <% } %>
+
+        <div class="card border rounded-3 p-4 shadow-sm bg-primary text-white">
+          <h5 class="fw-bold text-white mb-2">Punya Pertanyaan?</h5>
+          <p class="text-white-50 small mb-3">Silakan hubungi staf sekretariat kami bila memerlukan rincian teknis acara ini.</p>
+          <a href="/contact" class="btn btn-secondary-custom btn-sm">Kontak Kami</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<%- include('../../partials/footer') %>

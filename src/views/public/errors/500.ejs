@@ -1,0 +1,26 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+
+<main class="py-5 my-5">
+  <div class="container text-center">
+    <div class="py-5">
+      <div class="display-1 fw-bold text-danger mb-3">500</div>
+      <h2 class="fw-bold mb-3">Terjadi Gangguan Pada Server</h2>
+      <p class="text-secondary mb-4 mx-auto" style="max-width: 520px;">
+        <%= typeof message !== 'undefined' ? message : 'Sistem sedang mengalami kendala teknis internal. Tim kami sedang bekerja menyelesaikan masalah ini secepat mungkin.' %>
+      </p>
+      <% if (typeof error !== 'undefined' && error) { %>
+        <div class="alert alert-danger text-start mx-auto mb-4 p-3" style="max-width: 700px; font-family: monospace; font-size: 0.85rem; overflow-x: auto;">
+          <strong>Debug Trace:</strong><br>
+          <%= error.stack || error.message %>
+        </div>
+      <% } %>
+      <a href="/" class="btn btn-primary d-inline-flex align-items-center gap-2">
+        <i data-lucide="home" style="width: 16px; height: 16px;"></i>
+        <span>Kembali ke Beranda</span>
+      </a>
+    </div>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>

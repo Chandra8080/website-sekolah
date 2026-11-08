@@ -1,0 +1,77 @@
+<%- include('../partials/admin-head') %>
+<%- include('../partials/admin-sidebar') %>
+
+<div class="admin-main">
+  <%- include('../partials/admin-topbar') %>
+
+  <div class="admin-content">
+    <%- include('../partials/alert') %>
+
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+      <div>
+        <h3 class="fw-bold mb-1"><%= pageTitle %></h3>
+        <p class="text-muted small mb-0">Kelola tenaga kependidikan, staf tata usaha, dan teknisi sekolah.</p>
+      </div>
+      <a href="/admin/staff/create" class="btn btn-primary btn-sm d-inline-flex align-items-center gap-1">
+        <i data-lucide="plus" style="width: 14px; height: 14px;"></i>
+        <span>Tambah Staf TU</span>
+      </a>
+    </div>
+
+    <div class="admin-card">
+      <div class="table-responsive">
+        <table class="table-custom">
+          <thead>
+            <tr>
+              <th>Foto</th>
+              <th>Nama Lengkap</th>
+              <th>Jabatan</th>
+              <th>Departemen / Unit</th>
+              <th>NIP</th>
+              <th>Status</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (staffList && staffList.length > 0) { %>
+              <% staffList.forEach(function(staff) { %>
+                <tr>
+                  <td style="width: 60px;">
+                    <div style="width: 44px; height: 44px; border-radius: 50%; overflow: hidden; background: #e2e8f0;">
+                      <img src="<%= staff.photo || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop' %>" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                  </td>
+                  <td class="fw-bold text-dark"><%= staff.name %></td>
+                  <td class="small"><%= staff.position %></td>
+                  <td class="small text-muted"><%= staff.department || 'Tata Usaha' %></td>
+                  <td class="small text-muted font-monospace"><%= staff.nip || '-' %></td>
+                  <td>
+                    <span class="status-badge <%= staff.isActive ? 'active' : 'inactive' %>">
+                      <%= staff.isActive ? 'Aktif' : 'Nonaktif' %>
+                    </span>
+                  </td>
+                  <td>
+                    <div class="d-flex gap-1">
+                      <a href="/admin/staff/<%= staff.id %>/edit" class="btn-action" title="Edit"><i data-lucide="edit-2" style="width: 14px; height: 14px;"></i></a>
+                      <form action="/admin/staff/<%= staff.id %>/delete" method="POST" onsubmit="return confirm('Hapus staf ini?');" style="display: inline;">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <button type="submit" class="btn-action delete" title="Hapus"><i data-lucide="trash" style="width: 14px; height: 14px;"></i></button>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+              <% }); %>
+            <% } else { %>
+              <tr>
+                <td colspan="7" class="text-center text-muted py-4">Belum ada data staf kependidikan.</td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+      <%- include('../partials/pagination') %>
+    </div>
+  </div>
+
+  <%- include('../partials/admin-footer') %>
+</div>

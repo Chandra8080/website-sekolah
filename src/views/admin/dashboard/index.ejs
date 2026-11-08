@@ -1,0 +1,268 @@
+<%- include('../partials/admin-head') %>
+<%- include('../partials/admin-sidebar') %>
+
+<div class="admin-main">
+  <%- include('../partials/admin-topbar') %>
+
+  <div class="admin-content">
+    <%- include('../partials/alert') %>
+
+    <!-- Page Title & Greeting -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+      <div>
+        <h3 class="fw-bold mb-1">Dashboard Ikhtisar</h3>
+        <p class="text-muted small mb-0">Selamat datang kembali di sistem pengelolaan informasi sekolah.</p>
+      </div>
+      <div class="mt-3 mt-md-0 d-flex gap-2">
+        <a href="/admin/news/create" class="btn btn-sm btn-primary d-inline-flex align-items-center gap-1">
+          <i data-lucide="plus" style="width: 14px; height: 14px;"></i>
+          <span>Tulis Berita</span>
+        </a>
+        <a href="/admin/ppdb" class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center gap-1">
+          <i data-lucide="users" style="width: 14px; height: 14px;"></i>
+          <span>Pendaftar PPDB</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- 6 KPI Stat Cards -->
+    <div class="row g-3 mb-4">
+      <div class="col-sm-6 col-xl-2">
+        <div class="kpi-card">
+          <div>
+            <div class="kpi-value"><%= stats.applicantsCount %></div>
+            <div class="kpi-label">Pendaftar PPDB</div>
+          </div>
+          <div class="kpi-icon-box" style="background: #e0f2fe; color: #0284c7;">
+            <i data-lucide="user-plus" style="width: 24px; height: 24px;"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-xl-2">
+        <div class="kpi-card">
+          <div>
+            <div class="kpi-value"><%= stats.newsCount %></div>
+            <div class="kpi-label">Total Berita</div>
+          </div>
+          <div class="kpi-icon-box" style="background: #fef3c7; color: #d97706;">
+            <i data-lucide="newspaper" style="width: 24px; height: 24px;"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-xl-2">
+        <div class="kpi-card">
+          <div>
+            <div class="kpi-value"><%= stats.teachersCount %></div>
+            <div class="kpi-label">Guru & Pendidik</div>
+          </div>
+          <div class="kpi-icon-box" style="background: #dcfce7; color: #16a34a;">
+            <i data-lucide="graduation-cap" style="width: 24px; height: 24px;"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-xl-2">
+        <div class="kpi-card">
+          <div>
+            <div class="kpi-value"><%= stats.achievementsCount %></div>
+            <div class="kpi-label">Prestasi Siswa</div>
+          </div>
+          <div class="kpi-icon-box" style="background: #f3e8ff; color: #9333ea;">
+            <i data-lucide="trophy" style="width: 24px; height: 24px;"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-xl-2">
+        <div class="kpi-card">
+          <div>
+            <div class="kpi-value"><%= stats.eventsCount %></div>
+            <div class="kpi-label">Agenda Kegiatan</div>
+          </div>
+          <div class="kpi-icon-box" style="background: #fee2e2; color: #dc2626;">
+            <i data-lucide="calendar" style="width: 24px; height: 24px;"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-xl-2">
+        <div class="kpi-card">
+          <div>
+            <div class="kpi-value"><%= stats.unreadMessagesCount %></div>
+            <div class="kpi-label">Pesan Belum Dibaca</div>
+          </div>
+          <div class="kpi-icon-box" style="background: #f1f5f9; color: #475569;">
+            <i data-lucide="mail" style="width: 24px; height: 24px;"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts & Analytics Row -->
+    <div class="row g-4 mb-4">
+      <!-- PPDB Status Doughnut Chart -->
+      <div class="col-lg-5">
+        <div class="admin-card h-100">
+          <div class="admin-card-header">
+            <h5>Statistik Status PPDB</h5>
+            <span class="badge bg-light text-dark">Data Realtime</span>
+          </div>
+          <div class="admin-card-body d-flex flex-column align-items-center justify-content-center">
+            <div style="width: 240px; height: 240px; position: relative;">
+              <canvas id="ppdbStatusChart" data-status='<%- JSON.stringify(statusMap) %>'></canvas>
+            </div>
+            <div class="row text-center w-100 mt-4 g-2">
+              <div class="col-3">
+                <span class="d-block small text-muted">Menunggu</span>
+                <strong class="text-warning"><%= statusMap.pending || 0 %></strong>
+              </div>
+              <div class="col-3">
+                <span class="d-block small text-muted">Verifikasi</span>
+                <strong class="text-info"><%= statusMap.verified || 0 %></strong>
+              </div>
+              <div class="col-3">
+                <span class="d-block small text-muted">Diterima</span>
+                <strong class="text-success"><%= statusMap.accepted || 0 %></strong>
+              </div>
+              <div class="col-3">
+                <span class="d-block small text-muted">Ditolak</span>
+                <strong class="text-danger"><%= statusMap.rejected || 0 %></strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Applicants Table -->
+      <div class="col-lg-7">
+        <div class="admin-card h-100">
+          <div class="admin-card-header">
+            <h5>Pendaftar PPDB Terbaru</h5>
+            <a href="/admin/ppdb" class="btn btn-sm btn-outline-primary">Lihat Semua &rarr;</a>
+          </div>
+          <div class="table-responsive">
+            <table class="table-custom">
+              <thead>
+                <tr>
+                  <th>No. Reg</th>
+                  <th>Nama Calon Siswa</th>
+                  <th>Peminatan</th>
+                  <th>Status</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if (recentApplicants && recentApplicants.length > 0) { %>
+                  <% recentApplicants.forEach(function(app) { %>
+                    <tr>
+                      <td class="fw-bold text-primary small"><%= app.registrationNo %></td>
+                      <td>
+                        <div class="fw-semibold"><%= app.fullName %></div>
+                        <small class="text-muted"><%= app.originSchool || 'SMP' %></small>
+                      </td>
+                      <td><span class="badge bg-light text-dark small"><%= app.programChoice || '-' %></span></td>
+                      <td>
+                        <span class="status-badge <%= app.status %>"><%= app.status %></span>
+                      </td>
+                      <td>
+                        <a href="/admin/ppdb/<%= app.id %>" class="btn-action" title="Buka Detail">
+                          <i data-lucide="eye" style="width: 14px; height: 14px;"></i>
+                        </a>
+                      </td>
+                    </tr>
+                  <% }); %>
+                <% } else { %>
+                  <tr>
+                    <td colspan="5" class="text-center text-muted py-4">Belum ada pendaftar baru.</td>
+                  </tr>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact & Activity Logs Row -->
+    <div class="row g-4">
+      <!-- Recent Messages -->
+      <div class="col-lg-6">
+        <div class="admin-card h-100">
+          <div class="admin-card-header">
+            <h5>Pesan Masuk Terbaru</h5>
+            <a href="/admin/contact" class="btn btn-sm btn-outline-primary">Lihat Semua &rarr;</a>
+          </div>
+          <div class="table-responsive">
+            <table class="table-custom">
+              <thead>
+                <tr>
+                  <th>Pengirim</th>
+                  <th>Subjek</th>
+                  <th>Waktu</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if (recentMessages && recentMessages.length > 0) { %>
+                  <% recentMessages.forEach(function(msg) { %>
+                    <tr class="<%= !msg.isRead ? 'table-warning' : '' %>">
+                      <td>
+                        <div class="fw-semibold"><%= msg.name %></div>
+                        <small class="text-muted"><%= msg.email %></small>
+                      </td>
+                      <td class="small"><%= truncate(msg.subject, 30) %></td>
+                      <td class="text-muted small"><%= formatDate(msg.createdAt) %></td>
+                      <td>
+                        <a href="/admin/contact/<%= msg.id %>" class="btn-action" title="Buka Pesan">
+                          <i data-lucide="mail-open" style="width: 14px; height: 14px;"></i>
+                        </a>
+                      </td>
+                    </tr>
+                  <% }); %>
+                <% } else { %>
+                  <tr>
+                    <td colspan="4" class="text-center text-muted py-4">Tidak ada pesan baru.</td>
+                  </tr>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Activity Logs -->
+      <div class="col-lg-6">
+        <div class="admin-card h-100">
+          <div class="admin-card-header">
+            <h5>Catatan Aktivitas Sistem</h5>
+            <span class="badge bg-light text-secondary">Audit Trail</span>
+          </div>
+          <div class="p-3">
+            <% if (recentActivities && recentActivities.length > 0) { %>
+              <div class="d-flex flex-column gap-3">
+                <% recentActivities.forEach(function(log) { %>
+                  <div class="d-flex align-items-start gap-3 border-bottom pb-2">
+                    <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--admin-primary); margin-top: 6px; flex-shrink: 0;"></div>
+                    <div class="flex-grow-1 small">
+                      <div class="d-flex justify-content-between">
+                        <strong><%= log.user ? log.user.name : 'Sistem' %> (<%= log.action %>)</strong>
+                        <span class="text-muted" style="font-size: 0.72rem;"><%= formatDate(log.createdAt) %></span>
+                      </div>
+                      <div class="text-secondary"><%= log.description || log.module %></div>
+                    </div>
+                  </div>
+                <% }); %>
+              </div>
+            <% } else { %>
+              <div class="text-muted small text-center py-4">Belum ada aktivitas tercatat.</div>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%- include('../partials/admin-footer') %>
+</div>

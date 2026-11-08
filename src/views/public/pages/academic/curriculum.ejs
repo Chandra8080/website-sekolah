@@ -1,0 +1,50 @@
+<%- include('../../partials/head') %>
+<%- include('../../partials/header') %>
+
+<main class="py-5">
+  <div class="container">
+    <nav aria-label="breadcrumb" class="mb-4">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Beranda</a></li>
+        <li class="breadcrumb-item"><a href="/academic">Akademik</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Struktur Kurikulum</li>
+      </ol>
+    </nav>
+
+    <div class="text-center mb-5">
+      <span class="section-tag">Kerangka Pembelajaran</span>
+      <h1 class="fw-bold mb-2">Struktur & Dokumen Kurikulum</h1>
+      <p class="text-secondary max-w-600 mx-auto">Standar kompetensi kelulusan, capaian pembelajaran, dan silabus mata pelajaran.</p>
+    </div>
+
+    <% if (curriculums && curriculums.length > 0) { %>
+      <div class="row g-4 justify-content-center">
+        <% curriculums.forEach(function(c) { %>
+          <div class="col-lg-8">
+            <div class="card border rounded-3 p-4 shadow-sm">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="badge bg-primary text-uppercase">Tahun Ajaran <%= c.year %></span>
+                <% if (c.fileUrl) { %>
+                  <a href="<%= c.fileUrl %>" target="_blank" class="btn btn-outline-danger btn-sm d-inline-flex align-items-center gap-1">
+                    <i data-lucide="download" style="width: 14px; height: 14px;"></i>
+                    <span>Unduh Dokumen Silabus</span>
+                  </a>
+                <% } %>
+              </div>
+              <h4 class="fw-bold mb-2"><%= c.name %></h4>
+              <div class="text-secondary lh-lg mb-0">
+                <%- c.description %>
+              </div>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    <% } else { %>
+      <div class="alert alert-light border text-center py-5">
+        Dokumen kurikulum sedang dalam proses pembaruan.
+      </div>
+    <% } %>
+  </div>
+</main>
+
+<%- include('../../partials/footer') %>

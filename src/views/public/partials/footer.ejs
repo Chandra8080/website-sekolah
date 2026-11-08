@@ -1,0 +1,112 @@
+<footer class="site-footer">
+  <div class="container">
+    <div class="row g-4 mb-4">
+      <!-- School Info -->
+      <div class="col-lg-4 col-md-6">
+        <div class="d-flex align-items-center gap-2 mb-3">
+          <div style="width: 36px; height: 36px; border-radius: 6px; background: var(--color-secondary); display: flex; align-items: center; justify-content: center; color: #1a202c; font-weight: 800; font-size: 1.2rem;">
+            N
+          </div>
+          <h5 class="mb-0 text-white"><%= settings.school_name || 'SMA NEGERI NUSANTARA' %></h5>
+        </div>
+        <p class="text-white-50 small mb-3">
+          <%= settings.school_description || 'Mencetak generasi penerus yang cerdas, berintegritas, dan siap bersaing di kancah nasional maupun global dengan landasan budi pekerti luhur.' %>
+        </p>
+        <div class="d-flex gap-2">
+          <% if (typeof socialMedia !== 'undefined' && socialMedia.length > 0) { %>
+            <% socialMedia.forEach(function(item) { %>
+              <a href="<%= item.url %>" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-light d-inline-flex align-items-center justify-content-center" style="width: 36px; height: 36px; border-radius: 50%;">
+                <i data-lucide="<%= item.icon || 'globe' %>" style="width: 16px; height: 16px;"></i>
+              </a>
+            <% }); %>
+          <% } else { %>
+            <a href="#" class="btn btn-sm btn-outline-light d-inline-flex align-items-center justify-content-center" style="width: 36px; height: 36px; border-radius: 50%;"><i data-lucide="globe" style="width: 16px; height: 16px;"></i></a>
+          <% } %>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="col-lg-2 col-md-6">
+        <h5>Tautan Cepat</h5>
+        <ul class="list-unstyled d-flex flex-column gap-2 small">
+          <li><a href="/profile/about"><i data-lucide="chevron-right" style="width: 14px; height: 14px; display: inline-block;"></i> Tentang Kami</a></li>
+          <li><a href="/profile/visi-misi"><i data-lucide="chevron-right" style="width: 14px; height: 14px; display: inline-block;"></i> Visi & Misi</a></li>
+          <li><a href="/academic/programs"><i data-lucide="chevron-right" style="width: 14px; height: 14px; display: inline-block;"></i> Program Studi</a></li>
+          <li><a href="/facilities"><i data-lucide="chevron-right" style="width: 14px; height: 14px; display: inline-block;"></i> Fasilitas</a></li>
+          <li><a href="/ppdb"><i data-lucide="chevron-right" style="width: 14px; height: 14px; display: inline-block;"></i> PPDB Online</a></li>
+        </ul>
+      </div>
+
+      <!-- Informasi Publik -->
+      <div class="col-lg-3 col-md-6">
+        <h5>Informasi & Berita</h5>
+        <ul class="list-unstyled d-flex flex-column gap-2 small">
+          <li><a href="/news"><i data-lucide="chevron-right" style="width: 14px; height: 14px; display: inline-block;"></i> Kabar & Berita Terbaru</a></li>
+          <li><a href="/announcements"><i data-lucide="chevron-right" style="width: 14px; height: 14px; display: inline-block;"></i> Papan Pengumuman</a></li>
+          <li><a href="/events"><i data-lucide="chevron-right" style="width: 14px; height: 14px; display: inline-block;"></i> Agenda Kegiatan</a></li>
+          <li><a href="/achievements"><i data-lucide="chevron-right" style="width: 14px; height: 14px; display: inline-block;"></i> Prestasi Sekolah</a></li>
+          <li><a href="/gallery"><i data-lucide="chevron-right" style="width: 14px; height: 14px; display: inline-block;"></i> Dokumentasi Galeri</a></li>
+        </ul>
+      </div>
+
+      <!-- Kontak & Alamat -->
+      <div class="col-lg-3 col-md-6">
+        <h5>Hubungi Kami</h5>
+        <ul class="list-unstyled d-flex flex-column gap-2 small text-white-50">
+          <li class="d-flex align-items-start gap-2">
+            <i data-lucide="map-pin" style="width: 16px; height: 16px; color: var(--color-secondary); flex-shrink: 0; margin-top: 2px;"></i>
+            <span><%= settings.school_address || 'Jl. Pendidikan No. 45, Jakarta Selatan' %></span>
+          </li>
+          <li class="d-flex align-items-center gap-2">
+            <i data-lucide="phone" style="width: 16px; height: 16px; color: var(--color-secondary); flex-shrink: 0;"></i>
+            <span><%= settings.school_phone || '(021) 7890-1234' %></span>
+          </li>
+          <li class="d-flex align-items-center gap-2">
+            <i data-lucide="mail" style="width: 16px; height: 16px; color: var(--color-secondary); flex-shrink: 0;"></i>
+            <span><%= settings.school_email || 'info@sekolah.sch.id' %></span>
+          </li>
+          <li class="d-flex align-items-center gap-2">
+            <i data-lucide="clock" style="width: 16px; height: 16px; color: var(--color-secondary); flex-shrink: 0;"></i>
+            <span><%= settings.school_hours || 'Senin - Jumat: 07:00 - 16:00' %></span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bottom copyright -->
+    <div class="footer-bottom d-flex flex-column flex-md-row justify-content-between align-items-center text-white-50 gap-2">
+      <div>
+        &copy; <%= new Date().getFullYear() %> <strong><%= settings.school_name || 'SMA Negeri Nusantara' %></strong>. Hak Cipta Dilindungi Undang-Undang.
+      </div>
+      <div class="d-flex gap-3">
+        <a href="/sitemap.xml" class="text-white-50">Peta Situs (Sitemap)</a>
+        <span>&bull;</span>
+        <a href="/contact" class="text-white-50">Kontak</a>
+        <span>&bull;</span>
+        <a href="/admin/login" class="text-white-50">Portal Staf</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Lightbox Modal container for gallery -->
+<div id="lightboxModal" class="lightbox-modal">
+  <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+  <img id="lightboxImg" src="" alt="Perbesar Gambar" class="lightbox-content">
+</div>
+
+<!-- Bootstrap 5 Bundle JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
+</script>
+
+<!-- Main Client-Side JS -->
+<script src="/js/main.js"></script>
+</body>
+</html>

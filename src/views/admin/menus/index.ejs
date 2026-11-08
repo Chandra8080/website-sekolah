@@ -1,0 +1,101 @@
+<%- include('../partials/admin-head') %>
+<%- include('../partials/admin-sidebar') %>
+
+<div class="admin-main">
+  <%- include('../partials/admin-topbar') %>
+
+  <div class="admin-content">
+    <%- include('../partials/alert') %>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h3 class="fw-bold mb-1"><%= pageTitle %></h3>
+        <p class="text-muted small mb-0">Kelola susunan struktur menu navigasi header dan navbar website.</p>
+      </div>
+      <a href="/admin/menus/create" class="btn btn-primary btn-sm d-inline-flex align-items-center gap-1">
+        <i data-lucide="plus" style="width: 14px; height: 14px;"></i>
+        <span>Tambah Menu</span>
+      </a>
+    </div>
+
+    <div class="admin-card">
+      <div class="table-responsive">
+        <table class="table-custom">
+          <thead>
+            <tr>
+              <th>Urutan</th>
+              <th>Judul Menu</th>
+              <th>URL / Tautan</th>
+              <th>Target</th>
+              <th>Status</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (menus && menus.length > 0) { %>
+              <% menus.forEach(function(menu) { %>
+                <tr class="fw-bold table-light">
+                  <td style="width: 60px;"><%= menu.sortOrder %></td>
+                  <td>
+                    <i data-lucide="folder" style="width: 14px; height: 14px; display: inline-block;"></i>
+                    <%= menu.title %>
+                  </td>
+                  <td class="font-monospace small text-primary"><%= menu.url || '#' %></td>
+                  <td class="small text-muted"><%= menu.target %></td>
+                  <td>
+                    <span class="status-badge <%= menu.isActive ? 'active' : 'inactive' %>">
+                      <%= menu.isActive ? 'Aktif' : 'Nonaktif' %>
+                    </span>
+                  </td>
+                  <td>
+                    <div class="d-flex gap-1">
+                      <a href="/admin/menus/<%= menu.id %>/edit" class="btn-action" title="Edit"><i data-lucide="edit-2" style="width: 14px; height: 14px;"></i></a>
+                      <form action="/admin/menus/<%= menu.id %>/delete" method="POST" onsubmit="return confirm('Hapus menu ini beserta semua sub-menunya?');" style="display: inline;">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <button type="submit" class="btn-action delete" title="Hapus"><i data-lucide="trash" style="width: 14px; height: 14px;"></i></button>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+
+                <!-- Child menus -->
+                <% if (menu.children && menu.children.length > 0) { %>
+                  <% menu.children.forEach(function(child) { %>
+                    <tr>
+                      <td class="text-muted small ps-4">&bull; <%= child.sortOrder %></td>
+                      <td class="ps-4 text-secondary small">
+                        &mdash; <%= child.title %>
+                      </td>
+                      <td class="font-monospace small text-muted"><%= child.url %></td>
+                      <td class="small text-muted"><%= child.target %></td>
+                      <td>
+                        <span class="status-badge <%= child.isActive ? 'active' : 'inactive' %>" style="font-size: 0.7rem;">
+                          <%= child.isActive ? 'Aktif' : 'Nonaktif' %>
+                        </span>
+                      </td>
+                      <td>
+                        <div class="d-flex gap-1">
+                          <a href="/admin/menus/<%= child.id %>/edit" class="btn-action" title="Edit"><i data-lucide="edit-2" style="width: 14px; height: 14px;"></i></a>
+                          <form action="/admin/menus/<%= child.id %>/delete" method="POST" onsubmit="return confirm('Hapus sub-menu ini?');" style="display: inline;">
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                            <button type="submit" class="btn-action delete" title="Hapus"><i data-lucide="trash" style="width: 14px; height: 14px;"></i></button>
+                          </form>
+                        </div>
+                      </td>
+                    </tr>
+                  <% }); %>
+                <% } %>
+              <% }); %>
+            <% } else { %>
+              <tr>
+                <td colspan="6" class="text-center text-muted py-4">Belum ada menu navigasi.</td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <%- include('../partials/admin-footer') %>
+</div>

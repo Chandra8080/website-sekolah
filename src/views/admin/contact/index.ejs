@@ -1,0 +1,70 @@
+<%- include('../partials/admin-head') %>
+<%- include('../partials/admin-sidebar') %>
+
+<div class="admin-main">
+  <%- include('../partials/admin-topbar') %>
+
+  <div class="admin-content">
+    <%- include('../partials/alert') %>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h3 class="fw-bold mb-1"><%= pageTitle %></h3>
+        <p class="text-muted small mb-0">Pesan dan pertanyaan masyarakat yang masuk melalui formulir kontak.</p>
+      </div>
+    </div>
+
+    <div class="admin-card">
+      <div class="table-responsive">
+        <table class="table-custom">
+          <thead>
+            <tr>
+              <th>Status</th>
+              <th>Nama Pengirim</th>
+              <th>Email</th>
+              <th>No. Telp</th>
+              <th>Subjek</th>
+              <th>Waktu Masuk</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (messages && messages.length > 0) { %>
+              <% messages.forEach(function(msg) { %>
+                <tr class="<%= !msg.isRead ? 'table-warning' : '' %>">
+                  <td>
+                    <span class="badge <%= msg.isRead ? 'bg-light text-muted' : 'bg-primary' %>">
+                      <%= msg.isRead ? 'Sudah Dibaca' : 'Baru' %>
+                    </span>
+                  </td>
+                  <td class="fw-bold text-dark"><%= msg.name %></td>
+                  <td class="small"><%= msg.email %></td>
+                  <td class="small text-muted"><%= msg.phone || '-' %></td>
+                  <td class="small"><%= truncate(msg.subject, 35) %></td>
+                  <td class="small text-muted"><%= formatDate(msg.createdAt) %></td>
+                  <td>
+                    <div class="d-flex gap-1">
+                      <a href="/admin/contact/<%= msg.id %>" class="btn-action" title="Buka & Balas"><i data-lucide="mail-open" style="width: 14px; height: 14px;"></i></a>
+                      <form action="/admin/contact/<%= msg.id %>/delete" method="POST" onsubmit="return confirm('Hapus pesan kontak ini?');" style="display: inline;">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <button type="submit" class="btn-action delete" title="Hapus"><i data-lucide="trash" style="width: 14px; height: 14px;"></i></button>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+              <% }); %>
+            <% } else { %>
+              <tr>
+                <td colspan="7" class="text-center text-muted py-4">Kotak masuk pesan kontak masih kosong.</td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+
+      <%- include('../partials/pagination') %>
+    </div>
+  </div>
+
+  <%- include('../partials/admin-footer') %>
+</div>

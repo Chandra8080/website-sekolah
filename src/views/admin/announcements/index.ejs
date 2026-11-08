@@ -1,0 +1,87 @@
+<%- include('../partials/admin-head') %>
+<%- include('../partials/admin-sidebar') %>
+
+<div class="admin-main">
+  <%- include('../partials/admin-topbar') %>
+
+  <div class="admin-content">
+    <%- include('../partials/alert') %>
+
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+      <div>
+        <h3 class="fw-bold mb-1"><%= pageTitle %></h3>
+        <p class="text-muted small mb-0">Kelola papan pengumuman resmi dan edaran sekolah.</p>
+      </div>
+      <a href="/admin/announcements/create" class="btn btn-primary btn-sm d-inline-flex align-items-center gap-1">
+        <i data-lucide="plus" style="width: 14px; height: 14px;"></i>
+        <span>Buat Pengumuman</span>
+      </a>
+    </div>
+
+    <div class="admin-card">
+      <div class="table-responsive">
+        <table class="table-custom">
+          <thead>
+            <tr>
+              <th>Judul Pengumuman</th>
+              <th>Kategori</th>
+              <th>Prioritas</th>
+              <th>Status</th>
+              <th>Lampiran</th>
+              <th>Tanggal</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (announcements && announcements.length > 0) { %>
+              <% announcements.forEach(function(ann) { %>
+                <tr>
+                  <td>
+                    <div class="fw-bold text-dark"><%= ann.title %></div>
+                    <small class="text-muted"><%= truncate(ann.content, 60) %></small>
+                  </td>
+                  <td><span class="badge bg-light text-dark text-uppercase"><%= ann.category %></span></td>
+                  <td>
+                    <span class="badge <%= ann.priority === 'urgent' ? 'bg-danger' : (ann.priority === 'high' ? 'bg-warning text-dark' : 'bg-primary') %> text-uppercase">
+                      <%= ann.priority %>
+                    </span>
+                  </td>
+                  <td>
+                    <span class="status-badge <%= ann.isPublished ? 'published' : 'draft' %>">
+                      <%= ann.isPublished ? 'Terbit' : 'Draf' %>
+                    </span>
+                  </td>
+                  <td>
+                    <% if (ann.attachmentUrl) { %>
+                      <a href="<%= ann.attachmentUrl %>" target="_blank" class="badge bg-light text-primary">Ada Berkas</a>
+                    <% } else { %>
+                      <span class="text-muted small">-</span>
+                    <% } %>
+                  </td>
+                  <td class="small text-muted"><%= formatDate(ann.publishedAt || ann.createdAt) %></td>
+                  <td>
+                    <div class="d-flex gap-1">
+                      <a href="/announcements/<%= ann.id %>" target="_blank" class="btn-action" title="Lihat"><i data-lucide="eye" style="width: 14px; height: 14px;"></i></a>
+                      <a href="/admin/announcements/<%= ann.id %>/edit" class="btn-action" title="Edit"><i data-lucide="edit-2" style="width: 14px; height: 14px;"></i></a>
+                      <form action="/admin/announcements/<%= ann.id %>/delete" method="POST" onsubmit="return confirm('Hapus pengumuman ini?');" style="display: inline;">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <button type="submit" class="btn-action delete" title="Hapus"><i data-lucide="trash" style="width: 14px; height: 14px;"></i></button>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+              <% }); %>
+            <% } else { %>
+              <tr>
+                <td colspan="7" class="text-center text-muted py-4">Belum ada pengumuman yang dibuat.</td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+      <%- include('../partials/pagination') %>
+    </div>
+  </div>
+
+  <%- include('../partials/admin-footer') %>
+</div>

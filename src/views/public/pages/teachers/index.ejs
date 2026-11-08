@@ -1,0 +1,101 @@
+<%- include('../../partials/head') %>
+<%- include('../../partials/header') %>
+
+<main class="py-5">
+  <div class="container">
+    <nav aria-label="breadcrumb" class="mb-4">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Beranda</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Guru & Tenaga Kependidikan</li>
+      </ol>
+    </nav>
+
+    <div class="text-center mb-5">
+      <span class="section-tag">Sumber Daya Pendidik</span>
+      <h1 class="fw-bold mb-2">Guru & Tenaga Kependidikan</h1>
+      <p class="text-secondary max-w-600 mx-auto">Didukung oleh pendidik profesional yang berdedikasi tinggi membimbing putra-putri Anda.</p>
+    </div>
+
+    <!-- Filters & Search -->
+    <div class="row g-3 align-items-center justify-content-between mb-4">
+      <div class="col-md-6">
+        <div class="btn-group" role="group">
+          <a href="/teachers?category=all" class="btn <%= category === 'all' ? 'btn-primary' : 'btn-outline-secondary' %>">Semua</a>
+          <a href="/teachers?category=guru" class="btn <%= category === 'guru' ? 'btn-primary' : 'btn-outline-secondary' %>">Guru Pengajar</a>
+          <a href="/teachers?category=staff" class="btn <%= category === 'staff' ? 'btn-primary' : 'btn-outline-secondary' %>">Tata Usaha / Staf</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <form action="/teachers" method="GET" class="d-flex gap-2">
+          <% if (category !== 'all') { %><input type="hidden" name="category" value="<%= category %>"><% } %>
+          <input type="text" name="search" class="form-control" placeholder="Cari nama atau mata pelajaran..." value="<%= search %>">
+          <button type="submit" class="btn btn-primary d-inline-flex align-items-center">
+            <i data-lucide="search" style="width: 16px; height: 16px;"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Teachers Grid -->
+    <% if (teachers && teachers.length > 0) { %>
+      <div class="row g-4 mb-5">
+        <% teachers.forEach(function(teacher) { %>
+          <div class="col-sm-6 col-md-4 col-lg-3">
+            <div class="teacher-card">
+              <div class="teacher-photo-wrap">
+                <img src="<%= teacher.photo || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=400&auto=format&fit=crop' %>" alt="<%= teacher.name %>" loading="lazy">
+              </div>
+              <div class="teacher-info">
+                <% if (teacher.isHeadmaster) { %>
+                  <span class="badge bg-warning text-dark mb-2">Kepala Sekolah</span>
+                <% } %>
+                <h5 class="teacher-name"><%= teacher.name %></h5>
+                <div class="teacher-role"><%= teacher.position %></div>
+                <% if (teacher.subject) { %>
+                  <div class="small text-secondary mb-1">Mata Pelajaran: <strong><%= teacher.subject %></strong></div>
+                <% } %>
+                <% if (teacher.nip) { %>
+                  <div class="teacher-nip">NIP. <%= teacher.nip %></div>
+                <% } %>
+              </div>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    <% } %>
+
+    <!-- Staff List if category allows -->
+    <% if (staffList && staffList.length > 0) { %>
+      <div class="mb-4">
+        <h4 class="fw-bold mb-3 border-bottom pb-2">Tenaga Kependidikan & Tata Usaha</h4>
+        <div class="row g-4">
+          <% staffList.forEach(function(staff) { %>
+            <div class="col-sm-6 col-md-4 col-lg-3">
+              <div class="teacher-card">
+                <div class="teacher-photo-wrap">
+                  <img src="<%= staff.photo || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400&auto=format&fit=crop' %>" alt="<%= staff.name %>" loading="lazy">
+                </div>
+                <div class="teacher-info">
+                  <h5 class="teacher-name"><%= staff.name %></h5>
+                  <div class="teacher-role"><%= staff.position %></div>
+                  <div class="small text-secondary mb-1">Bagian: <%= staff.department || 'Tata Usaha' %></div>
+                  <% if (staff.nip) { %>
+                    <div class="teacher-nip">NIP. <%= staff.nip %></div>
+                  <% } %>
+                </div>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+      </div>
+    <% } %>
+
+    <% if ((!teachers || teachers.length === 0) && (!staffList || staffList.length === 0)) { %>
+      <div class="alert alert-light border text-center py-5">
+        Tidak ada data guru atau tenaga pendidik yang cocok dengan pencarian Anda.
+      </div>
+    <% } %>
+  </div>
+</main>
+
+<%- include('../../partials/footer') %>

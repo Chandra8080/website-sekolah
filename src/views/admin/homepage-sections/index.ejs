@@ -1,0 +1,63 @@
+<%- include('../partials/admin-head') %>
+<%- include('../partials/admin-sidebar') %>
+
+<div class="admin-main">
+  <%- include('../partials/admin-topbar') %>
+
+  <div class="admin-content">
+    <%- include('../partials/alert') %>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h3 class="fw-bold mb-1"><%= pageTitle %></h3>
+        <p class="text-muted small mb-0">Kelola teks judul, subjudul, dan konten pada setiap bagian beranda website.</p>
+      </div>
+    </div>
+
+    <div class="admin-card">
+      <div class="table-responsive">
+        <table class="table-custom">
+          <thead>
+            <tr>
+              <th>Kode Kunci</th>
+              <th>Judul Bagian</th>
+              <th>Subjudul / Tagline</th>
+              <th>Urutan</th>
+              <th>Status</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (sections && sections.length > 0) { %>
+              <% sections.forEach(function(sec) { %>
+                <tr>
+                  <td class="font-monospace fw-bold text-primary"><%= sec.key %></td>
+                  <td class="fw-bold text-dark"><%= sec.title || '-' %></td>
+                  <td class="small text-muted"><%= truncate(sec.subtitle, 50) || '-' %></td>
+                  <td class="small text-muted"><%= sec.sortOrder %></td>
+                  <td>
+                    <span class="status-badge <%= sec.isActive ? 'active' : 'inactive' %>">
+                      <%= sec.isActive ? 'Aktif' : 'Nonaktif' %>
+                    </span>
+                  </td>
+                  <td>
+                    <a href="/admin/homepage-sections/<%= sec.id %>/edit" class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1">
+                      <i data-lucide="edit-2" style="width: 14px; height: 14px;"></i>
+                      <span>Sunting Konten</span>
+                    </a>
+                  </td>
+                </tr>
+              <% }); %>
+            <% } else { %>
+              <tr>
+                <td colspan="6" class="text-center text-muted py-4">Belum ada konfigurasi bagian beranda.</td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <%- include('../partials/admin-footer') %>
+</div>

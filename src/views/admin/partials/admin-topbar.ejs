@@ -1,0 +1,44 @@
+<header class="admin-topbar">
+  <div class="topbar-left">
+    <button class="btn btn-sm btn-outline-secondary d-lg-none" id="sidebarToggle" type="button">
+      <i data-lucide="menu" style="width: 18px; height: 18px;"></i>
+    </button>
+    <a href="/" target="_blank" class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1">
+      <i data-lucide="external-link" style="width: 14px; height: 14px;"></i>
+      <span class="d-none d-sm-inline">Buka Website Utama</span>
+    </a>
+  </div>
+
+  <div class="topbar-right">
+    <div class="d-none d-md-block text-muted small">
+      <i data-lucide="calendar" style="width: 14px; height: 14px; display: inline-block;"></i>
+      <%= new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) %>
+    </div>
+
+    <!-- User Profile Dropdown -->
+    <div class="dropdown">
+      <a href="#" class="d-flex align-items-center gap-2 text-decoration-none dropdown-toggle text-dark" data-bs-toggle="dropdown" aria-expanded="false">
+        <div style="width: 36px; height: 36px; border-radius: 50%; background: #e2e8f0; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--admin-primary); overflow: hidden;">
+          <% if (currentUser && currentUser.avatar) { %>
+            <img src="<%= currentUser.avatar %>" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
+          <% } else { %>
+            <%= currentUser ? currentUser.name.charAt(0) : 'A' %>
+          <% } %>
+        </div>
+        <div class="d-none d-sm-block text-start">
+          <div class="fw-bold small lh-1"><%= currentUser ? currentUser.name : 'Administrator' %></div>
+          <small class="text-muted" style="font-size: 0.72rem;"><%= currentUser ? currentUser.roleName : 'Super Admin' %></small>
+        </div>
+      </a>
+      <ul class="dropdown-menu dropdown-menu-end shadow-sm border mt-2">
+        <li><a class="dropdown-item" href="/admin/settings"><i data-lucide="settings" style="width: 14px; height: 14px; margin-right: 6px;"></i> Pengaturan</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li>
+          <a class="dropdown-item text-danger" href="/admin/logout">
+            <i data-lucide="log-out" style="width: 14px; height: 14px; margin-right: 6px;"></i> Keluar Sistem
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</header>

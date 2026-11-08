@@ -1,0 +1,52 @@
+<%- include('../../partials/head') %>
+<%- include('../../partials/header') %>
+
+<main class="py-5">
+  <div class="container">
+    <nav aria-label="breadcrumb" class="mb-4">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Beranda</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Sarana & Prasarana</li>
+      </ol>
+    </nav>
+
+    <div class="text-center mb-5">
+      <span class="section-tag">Lingkungan Kampus</span>
+      <h1 class="fw-bold mb-2">Sarana & Prasarana Sekolah</h1>
+      <p class="text-secondary max-w-600 mx-auto">Mendukung iklim belajar yang aman, nyaman, dan berteknologi tinggi.</p>
+    </div>
+
+    <!-- Category Filter -->
+    <% if (categories && categories.length > 0) { %>
+      <div class="d-flex flex-wrap justify-content-center gap-2 mb-4">
+        <a href="/facilities" class="btn btn-sm <%= !selectedCategory ? 'btn-primary' : 'btn-outline-secondary' %>">Semua Fasilitas</a>
+        <% categories.forEach(function(cat) { %>
+          <a href="/facilities?category=<%= encodeURIComponent(cat) %>" class="btn btn-sm <%= selectedCategory === cat ? 'btn-primary' : 'btn-outline-secondary' %>"><%= cat %></a>
+        <% }); %>
+      </div>
+    <% } %>
+
+    <% if (facilities && facilities.length > 0) { %>
+      <div class="row g-4">
+        <% facilities.forEach(function(f) { %>
+          <div class="col-sm-6 col-md-4">
+            <div class="card h-100 border rounded-3 shadow-sm overflow-hidden">
+              <img src="<%= f.imageUrl || 'https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=600&auto=format&fit=crop' %>" class="card-img-top" alt="<%= f.name %>" style="height: 200px; object-fit: cover;">
+              <div class="card-body">
+                <span class="badge bg-light text-primary mb-2"><%= f.category %></span>
+                <h5 class="card-title fw-bold fs-6 mb-2"><%= f.name %></h5>
+                <div class="card-text text-muted small"><%- f.description %></div>
+              </div>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    <% } else { %>
+      <div class="alert alert-light border text-center py-5">
+        Tidak ada data fasilitas yang ditemukan.
+      </div>
+    <% } %>
+  </div>
+</main>
+
+<%- include('../../partials/footer') %>

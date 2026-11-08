@@ -1,0 +1,57 @@
+<%- include('../../partials/head') %>
+<%- include('../../partials/header') %>
+
+<main class="py-5">
+  <div class="container">
+    <nav aria-label="breadcrumb" class="mb-4">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Beranda</a></li>
+        <li class="breadcrumb-item">Profil</li>
+        <li class="breadcrumb-item active" aria-current="page">Visi & Misi</li>
+      </ol>
+    </nav>
+
+    <div class="row g-5">
+      <div class="col-lg-8">
+        <h1 class="fw-bold mb-3"><%= (section && section.title) || 'Visi, Misi & Nilai Inti' %></h1>
+        <p class="lead text-secondary mb-4"><%= (section && section.subtitle) || 'Arah kompas perjuangan dan panduan filosofis penyelenggaraan pendidikan berkualitas.' %></p>
+
+        <div class="card border rounded-3 p-4 bg-light mb-4">
+          <h4 class="fw-bold text-primary mb-2">Visi Sekolah</h4>
+          <p class="mb-0 fs-5 fst-italic">"Menjadi lembaga pendidikan terkemuka bertaraf internasional yang berakar pada nilai-nilai kebangsaan, integritas moral, dan kepemimpinan adaptif."</p>
+        </div>
+
+        <div class="mb-5">
+          <h4 class="fw-bold text-primary mb-3">Misi Sekolah</h4>
+          <ol class="list-group list-group-numbered list-group-flush text-secondary lh-lg">
+            <li class="list-group-item bg-transparent">Menyelenggarakan proses pembelajaran yang inovatif, berpusat pada siswa, dan berbasis riset.</li>
+            <li class="list-group-item bg-transparent">Menumbuhkan karakter integritas, kedisiplinan, dan tanggung jawab sosial melalui keteladanan pendidik.</li>
+            <li class="list-group-item bg-transparent">Mengembangkan kecakapan literasi digital, sains terapan, serta kemampuan komunikasi multibahasa.</li>
+            <li class="list-group-item bg-transparent">Membangun jejaring kolaborasi dengan perguruan tinggi terkemuka dan dunia industri global.</li>
+          </ol>
+        </div>
+
+        <% if (section && section.content) { %>
+          <div class="content-body text-secondary lh-lg mb-5">
+            <%- section.content %>
+          </div>
+        <% } %>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="card border rounded-3 p-4 shadow-sm mb-4">
+          <h5 class="fw-bold mb-3">Profil Lembaga</h5>
+          <div class="list-group list-group-flush">
+            <a href="/profile/about" class="list-group-item list-group-item-action">Tentang Sekolah</a>
+            <a href="/profile/history" class="list-group-item list-group-item-action">Sejarah Singkat</a>
+            <a href="/profile/visi-misi" class="list-group-item list-group-item-action active fw-bold">Visi & Misi</a>
+            <a href="/profile/structure" class="list-group-item list-group-item-action">Struktur Organisasi</a>
+            <a href="/profile/headmaster" class="list-group-item list-group-item-action">Sambutan Kepala Sekolah</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<%- include('../../partials/footer') %>
